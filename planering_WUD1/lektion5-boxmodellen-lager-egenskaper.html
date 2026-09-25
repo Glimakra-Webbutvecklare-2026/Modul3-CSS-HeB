@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="sv">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Lektion 5 · Boxmodellen – fyra lager och egenskaper</title>
+<link rel="stylesheet" href="lektioner.css">
+<style>
+  .bm { margin-top: 1.4rem; }
+  .bm-layer { position: relative; padding: 1.8rem 1.2rem 1.2rem; border-radius: 6px; }
+  .bm-margin { border: 2px dashed #b58a00; background: #fffdf3; }
+  .bm-border { border: 4px solid var(--ink); background: #f4f4f4; }
+  .bm-padding { background: repeating-linear-gradient(45deg, #e7f1fb, #e7f1fb 10px, #d9e9f8 10px, #d9e9f8 20px); }
+  .bm-content { padding: 1.5rem 1rem; border: 1px dashed #1e5a8a; border-radius: 4px; background: #cfe6f7; text-align: center; font-weight: 700; }
+  .bm-name { position: absolute; top: .4rem; left: .7rem; color: var(--muted); font-size: .68rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+  .bm-margin > .bm-name { color: #8a6d1a; }
+  .bd-demo { display: flex; gap: .8rem; flex-wrap: wrap; margin-top: 1.2rem; }
+  .bd-demo div { flex: 1; min-width: 7rem; padding: .9rem; background: #f5f5f5; text-align: center; font-weight: 700; }
+  .bd-solid { border: 4px solid var(--ink); }
+  .bd-dashed { border: 4px dashed var(--ink); }
+  .bd-dotted { border: 4px dotted var(--ink); }
+  .dt { margin-top: 1.2rem; }
+  .dt-layer { position: relative; padding: 1.7rem 1.2rem 1.1rem; border-radius: 6px; }
+  .dt-margin { background: #f7d7b5; }
+  .dt-border { background: #f5e6a8; }
+  .dt-padding { background: #c8dfb0; }
+  .dt-content { padding: 1.3rem 1rem; border-radius: 4px; background: #b8cfe8; text-align: center; font-weight: 700; }
+  .dt .bm-name { color: #4a4a4a; }
+</style>
+</head>
+<body><div class="bar"></div><main class="deck">
+
+  <section class="slide active"><div class="slide-inner">
+    <div class="kicker">Vecka 39 · Lektion 5 · HeB</div>
+    <h1>Boxmodellen</h1>
+    <p class="lead">Varje element på en webbsida är en låda. Idag lär vi oss lådans fyra lager och hur du styr dem med CSS.</p>
+    <p class="muted">Mål: kunna namnge och använda <code>margin</code>, <code>border</code>, <code>padding</code> och <code>content</code> samt läsa av dem i DevTools.</p>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Varför boxmodellen?</div>
+    <h2>Allt du ser är en låda</h2>
+    <p class="lead">Webbläsaren ritar varje element som en rektangel. När en layout känns konstig är det nästan alltid boxmodellen som ligger bakom.</p>
+    <ul class="steps">
+      <li><span class="n">1</span><span>För trångt mellan två element? → <code>margin</code></span></li>
+      <li><span class="n">2</span><span>Texten ligger klistrad mot kanten? → <code>padding</code></span></li>
+      <li><span class="n">3</span><span>Lådan tar mer plats än <code>width: 200px</code>? → boxmodellen</span></li>
+    </ul>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Boxmodellens delar</div>
+    <h2>Fyra lager, utifrån och in</h2>
+    <div class="grid">
+      <div class="bm">
+        <div class="bm-layer bm-margin"><span class="bm-name">margin</span>
+          <div class="bm-layer bm-border"><span class="bm-name">border</span>
+            <div class="bm-layer bm-padding"><span class="bm-name">padding</span>
+              <div class="bm-content">content<br>200 × 100 px</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="terms">
+        <div><span class="t">margin</span><span class="d">ytterst. Osynligt utrymme <em>utanför</em> kanten – avstånd mellan element.</span></div>
+        <div><span class="t">border</span><span class="d">ramen runt elementet. Har tjocklek, stil och färg.</span></div>
+        <div><span class="t">padding</span><span class="d">osynligt utrymme <em>innanför</em> kanten – luft mellan kant och innehåll.</span></div>
+        <div><span class="t">content</span><span class="d">själva innehållet. <code>width</code> och <code>height</code> styr detta område.</span></div>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Analogin</div>
+    <h2>Tänk dig en flyttkartong</h2>
+    <div class="grid four">
+      <div class="card"><h3>Content</h3><p>Sakerna i kartongen.</p></div>
+      <div class="card"><h3>Padding</h3><p>Bubbelplast runt sakerna.</p></div>
+      <div class="card"><h3>Border</h3><p>Själva kartongen.</p></div>
+      <div class="card"><h3>Margin</h3><p>Luften mellan kartongerna.</p></div>
+    </div>
+    <div class="note"><div class="tag">Kom ihåg</div><p>Bara <code>border</code> syns av sig själv. <code>margin</code> och <code>padding</code> är genomskinliga – de syns bara som avstånd.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Egenskaperna</div>
+    <h2>Fyra egenskaper – fyra lager</h2>
+    <table class="table">
+      <tr><th>Egenskap</th><th>Styr</th><th>Exempel</th></tr>
+      <tr><td><code>width</code>, <code>height</code></td><td>content-områdets storlek</td><td><code>width: 200px;</code></td></tr>
+      <tr><td><code>padding</code></td><td>luft innanför kanten</td><td><code>padding: 16px;</code></td></tr>
+      <tr><td><code>border</code></td><td>ramen runt elementet</td><td><code>border: 2px solid #333;</code></td></tr>
+      <tr><td><code>margin</code></td><td>luft utanför kanten</td><td><code>margin: 24px;</code></td></tr>
+    </table>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">padding</div>
+    <h2>Luft innanför kanten</h2>
+    <pre>padding: 16px;                <span class="c">/* alla fyra sidor */</span>
+padding: 8px 16px;            <span class="c">/* lodrätt | vågrätt */</span>
+padding: 8px 16px 24px;       <span class="c">/* topp | vågrätt | botten */</span>
+padding: 8px 16px 24px 32px;  <span class="c">/* topp · höger · botten · vänster */</span></pre>
+    <div class="note"><div class="tag">Medurs</div><p>Fyra värden läses medurs från toppen: <strong>topp → höger → botten → vänster</strong>. Samma ordning gäller för <code>margin</code>.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">border</div>
+    <h2>Ramen runt elementet</h2>
+    <pre>border: 2px solid #333;
+<span class="c">/*        ↑      ↑     ↑
+       tjocklek  stil  färg */</span></pre>
+    <div class="bd-demo">
+      <div class="bd-solid">solid</div>
+      <div class="bd-dashed">dashed</div>
+      <div class="bd-dotted">dotted</div>
+    </div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">margin</div>
+    <h2>Luft utanför kanten</h2>
+    <pre>margin: 24px;             <span class="c">/* lika mycket runt om */</span>
+margin: 0 auto;           <span class="c">/* centrerar en blocklåda med fast bredd */</span>
+margin-bottom: 32px;      <span class="c">/* bara under */</span></pre>
+    <p class="muted">Marginalen är genomskinlig – bakgrundsfärgen sträcker sig bara till kanten, aldrig ut i margin.</p>
+    <div class="note"><div class="tag">Vanlig förväxling</div><p><code>padding</code> skapar luft <em>inuti</em> lådan. <code>margin</code> skapar avstånd <em>mellan</em> lådor.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Förutsäg · ärftlighet</div>
+    <h2>Ärvs margin och padding?</h2>
+    <pre>.parent-box {
+  color: darkblue;
+  padding: 12px;
+  margin: 20px;
+}</pre>
+    <p class="lead">Barnet inuti <code>.parent-box</code> har ingen egen <code>color</code>, <code>padding</code> eller <code>margin</code>. Vad ärvs?</p>
+    <button class="reveal">Visa svar</button>
+    <div class="answer"><p><strong>Färgen ärvs</strong> – <code>color</code> och <code>font-family</code> ärvs av barn. <strong>Padding och margin ärvs inte</strong> – varje låda har sina egna mått.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Exempel</div>
+    <h2>En enkel box</h2>
+    <pre>&lt;div class="box"&gt;Detta är en enkel box.&lt;/div&gt;
+
+.box {
+  width: 200px;
+  padding: 16px;
+  border: 2px solid #333;
+  margin: 24px;
+  background-color: #eef;
+}</pre>
+    <p class="muted">Ändra ett värde i taget och ladda om – då ser du exakt vad just den egenskapen gör.</p>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Förutsäg · räkna</div>
+    <h2>Hur bred blir lådan?</h2>
+    <pre>.box {
+  width: 200px;
+  padding: 16px;
+  border: 2px solid #333;
+}</pre>
+    <p class="lead">Hur bred är lådan <strong>totalt</strong> från kant till kant?</p>
+    <button class="reveal">Visa svar</button>
+    <div class="answer">
+      <pre style="margin-top:.4rem;">content   200px
+padding   2 × 16px =  32px
+border    2 ×  2px =   4px
+---------------------------
+totalt    236px</pre>
+      <p><code>width</code> styr bara content-området. Padding och border läggs <strong>utanpå</strong>. Margin räknas ännu längre ut och påverkar avståndet till andra element.</p>
+    </div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Verktyget</div>
+    <h2>Läs av boxmodellen i DevTools</h2>
+    <div class="grid">
+      <ul class="steps">
+        <li><span class="n">1</span><span>Högerklicka på elementet → <strong>Inspektera</strong> (Inspect).</span></li>
+        <li><span class="n">2</span><span>Markera elementet i fliken <strong>Elements</strong>.</span></li>
+        <li><span class="n">3</span><span>Läs panelen för boxmodellen: content, padding, border, margin.</span></li>
+        <li><span class="n">4</span><span>Ändra ett värde direkt i panelen och se resultatet live.</span></li>
+      </ul>
+      <div class="dt">
+        <div class="dt-layer dt-margin"><span class="bm-name">margin 24</span>
+          <div class="dt-layer dt-border"><span class="bm-name">border 2</span>
+            <div class="dt-layer dt-padding"><span class="bm-name">padding 16</span>
+              <div class="dt-content">content 200 × 52</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Lektion 5 · Övningar</div>
+    <h2>Prova själv</h2>
+    <div class="exercises">
+      <div class="ex"><div class="n">1</div><p>Skapa en <code>div</code> med <code>width: 300px;</code>, <code>padding: 20px;</code>, <code>border: 3px solid;</code> och <code>margin: 24px;</code>. Ge den en bakgrundsfärg.</p></div>
+      <div class="ex"><div class="n">2</div><p>Byt <code>padding</code> mot <code>padding: 10px 30px;</code>. Vad förändras – och varför?</p></div>
+      <div class="ex"><div class="n">3</div><p>Testa <code>border-style</code>: <code>solid</code>, <code>dashed</code> och <code>dotted</code>. Jämför.</p></div>
+      <div class="ex"><div class="n">4</div><p>Sätt <code>margin: 0;</code> på lådan. Vad händer med avståndet till nästa element?</p></div>
+      <div class="ex"><div class="n">5</div><p>Räkna ut lådans totala bredd <strong>innan</strong> du mäter i DevTools. Stämmer det?</p></div>
+      <div class="ex"><div class="n">6</div><p>Inspektera lådan i DevTools och läs av content, padding, border och margin.</p></div>
+      <div class="ex"><div class="n">7</div><p>Bygg två lådor med olika <code>margin</code> och jämför mellanrummet mellan dem.</p></div>
+    </div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Lektion 5 · Avslut</div>
+    <h1>Klar när…</h1>
+    <ul class="steps">
+      <li><span class="n">✓</span><span>Du kan namnge de fyra lagren <strong>utifrån och in</strong>.</span></li>
+      <li><span class="n">✓</span><span>Du kan förklara skillnaden mellan <code>padding</code> och <code>margin</code>.</span></li>
+      <li><span class="n">✓</span><span>Du kan räkna ut en lådas totala bredd med <code>content-box</code>.</span></li>
+      <li><span class="n">✓</span><span>Du kan hitta boxmodellen i DevTools och läsa av värdena.</span></li>
+    </ul>
+    <div class="note"><div class="tag">Nästa lektion</div><p>Vi gör räkningen enklare med <code>box-sizing: border-box</code> och tittar på block, inline och position.</p></div>
+  </div></section>
+
+</main><div class="nav"><span class="hint">← → navigera · mellanslag går framåt</span><span class="counter"><span id="cur">1</span> / <span id="total">1</span></span></div><script src="lektioner.js"></script></body>
+</html>

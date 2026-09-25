@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="sv">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Lektion 6 · box-sizing, display och positionering</title>
+<link rel="stylesheet" href="lektioner.css">
+<style>
+  .demo-row { display: flex; align-items: flex-start; gap: 2.2rem; flex-wrap: wrap; margin-top: 1.3rem; }
+  .demo-item { font-size: .85rem; }
+  .demo-label { margin-bottom: .4rem; color: var(--muted); font-size: .72rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+  .demo-note { margin-top: .5rem; font-weight: 700; }
+  .demo-content { width: 200px; padding: 20px; border: 4px solid #0077cc; background: #d0f0ff; box-sizing: content-box; }
+  .demo-border { width: 200px; padding: 20px; border: 4px solid #cc7700; background: #fff0d0; box-sizing: border-box; }
+  .blk { display: block; margin-top: .5rem; padding: .5rem .8rem; border: 2px solid #1976d2; background: #e3f2fd; font-weight: 700; }
+  .inl { display: inline; padding: .15rem .6rem; border: 2px solid #f57c00; background: #fff3e0; font-weight: 700; }
+  .inlb { display: inline-block; margin: 0 .2rem; padding: .45rem .9rem; border: 2px solid #388e3c; background: #e8f5e9; font-weight: 700; }
+  .pos-parent { position: relative; height: 150px; padding: 12px; border: 2px dashed #555; background: #f5f5f5; }
+  .pos-child { position: absolute; right: 12px; bottom: 12px; padding: 10px; border: 2px solid #c62828; background: #ffcdd2; font-weight: 700; }
+  .scroll-area { height: 200px; overflow: auto; margin-top: 1.2rem; padding: 12px; border: 2px solid #adb5bd; background: #f1f3f5; }
+  .scroll-area h3 { position: sticky; top: 0; margin: 0; padding: 10px; border: 2px solid #f9a825; background: #fff3bf; }
+  .scroll-area .space { height: 110px; }
+</style>
+</head>
+<body><div class="bar"></div><main class="deck">
+
+  <section class="slide active"><div class="slide-inner">
+    <div class="kicker">Vecka 39 · Lektion 6 · HeB</div>
+    <h1>Från låda till layout</h1>
+    <p class="lead">Vi gör storleksräkningen enklare med <code>box-sizing</code>, lär oss hur block och inline beter sig – och hur <code>position</code> kan flytta ett element.</p>
+    <p class="muted">Mål: kunna räkna rätt med <code>border-box</code>, skilja på block och inline samt välja rätt <code>position</code> i enkla situationer.</p>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Repetition</div>
+    <h2>Boxmodellen i minnet</h2>
+    <div class="terms">
+      <div><span class="t">margin</span><span class="d">osynligt avstånd utanför kanten</span></div>
+      <div><span class="t">border</span><span class="d">ramen runt elementet</span></div>
+      <div><span class="t">padding</span><span class="d">luft innanför kanten</span></div>
+      <div><span class="t">content</span><span class="d">innehållet – styrs av <code>width</code> och <code>height</code></span></div>
+    </div>
+    <pre>width: 200px; padding: 20px; border: 4px solid;
+<span class="c">/* total bredd: 200 + 40 + 8 = 248px */</span></pre>
+    <p class="muted">Standard heter <code>content-box</code>. Men tänk om <code>width</code> kunde betyda hela lådans bredd?</p>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">box-sizing</div>
+    <h2>Samma width – olika total bredd</h2>
+    <div class="demo-row">
+      <div class="demo-item">
+        <div class="demo-label">content-box (standard)</div>
+        <div class="demo-content">width = innehållet</div>
+        <div class="demo-note">total: 248px</div>
+      </div>
+      <div class="demo-item">
+        <div class="demo-label">border-box</div>
+        <div class="demo-border">width = allt</div>
+        <div class="demo-note">total: 200px</div>
+      </div>
+    </div>
+    <p class="muted">Båda lådorna har <code>width: 200px;</code>, <code>padding: 20px;</code> och <code>border: 4px solid;</code>. Ändå blir de olika breda.</p>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Förutsäg · box-sizing</div>
+    <h2>Hur stort blir innehållet?</h2>
+    <pre>.box {
+  box-sizing: border-box;
+  width: 200px;
+  padding: 20px;
+  border: 4px solid;
+}</pre>
+    <p class="lead">Hela lådan är 200px. Hur mycket plats får <strong>innehållet</strong> kvar?</p>
+    <button class="reveal">Visa svar</button>
+    <div class="answer">
+      <pre style="margin-top:.4rem;">200 − (2 × 20) − (2 × 4) = 152px</pre>
+      <p>Med <code>border-box</code> räknas padding och border <strong>inifrån</strong> den angivna bredden. Innehållet får det som blir över.</p>
+    </div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Rekommendation</div>
+    <h2>Använd <code>border-box</code> överallt</h2>
+    <pre>*, *::before, *::after {
+  box-sizing: border-box;
+}</pre>
+    <ul class="steps">
+      <li><span class="n">1</span><span><code>width</code> blir den <strong>totala</strong> bredden – lätt att räkna.</span></li>
+      <li><span class="n">2</span><span>Padding och border spränger inte längre layouten.</span></li>
+      <li><span class="n">3</span><span>Samma regel används i nästan alla moderna projekt.</span></li>
+    </ul>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Blockelement</div>
+    <h2>Block tar hela raden</h2>
+    <div class="blk">Block 1 – hela förälderns bredd</div>
+    <div class="blk">Block 2 – börjar på ny rad</div>
+    <ul class="steps">
+      <li><span class="n">✓</span><span>Börjar alltid på en ny rad.</span></li>
+      <li><span class="n">✓</span><span>Tar upp hela tillgängliga bredden.</span></li>
+      <li><span class="n">✓</span><span><code>width</code>, <code>height</code>, <code>margin</code> och <code>padding</code> fungerar fullt ut.</span></li>
+    </ul>
+    <p class="muted">Exempel: <code>div</code>, <code>p</code>, <code>h1</code>, <code>ul</code>, <code>li</code> – bygger sidans struktur.</p>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Inline-element</div>
+    <h2>Inline ligger kvar på raden</h2>
+    <p>Här är <span class="inl">ett inline-element</span> mitt i texten och <span class="inl">ett till</span> på samma rad.</p>
+    <ul class="steps">
+      <li><span class="n">✓</span><span>Börjar inte på en ny rad.</span></li>
+      <li><span class="n">✓</span><span>Tar bara upp så mycket plats som innehållet behöver.</span></li>
+      <li><span class="n">✗</span><span><code>width</code> och <code>height</code> har ingen effekt.</span></li>
+      <li><span class="n">✗</span><span>Endast <strong>horisontell</strong> <code>margin</code> och <code>padding</code> fungerar som väntat.</span></li>
+    </ul>
+    <p class="muted">Exempel: <code>span</code>, <code>a</code>, <code>strong</code>, <code>em</code> – används inuti text.</p>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Jämförelse</div>
+    <h2>Block vs inline</h2>
+    <table class="table">
+      <tr><th>Egenskap</th><th>Blockelement</th><th>Inline-element</th></tr>
+      <tr><td>Ny rad</td><td>Ja</td><td>Nej</td></tr>
+      <tr><td>Bredd</td><td>Hela förälderns</td><td>Innehållets bredd</td></tr>
+      <tr><td><code>width</code> / <code>height</code></td><td>Ja</td><td>Nej</td></tr>
+      <tr><td><code>margin</code> / <code>padding</code></td><td>Ja</td><td>Endast horisontellt</td></tr>
+    </table>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">display</div>
+    <h2><code>display</code> ändrar beteendet</h2>
+    <pre>span { display: block; }         <span class="c">/* blir en blocklåda */</span>
+div  { display: inline; }        <span class="c">/* ligger på raden */</span>
+a    { display: inline-block; }  <span class="c">/* på raden – men width fungerar */</span></pre>
+    <p>Länkar som <code>inline-block</code>:</p>
+    <p><span class="inlb">Hem</span><span class="inlb">Om oss</span><span class="inlb">Kontakt</span></p>
+    <div class="note"><div class="tag">inline-block</div><p>Bäst av båda: ligger kvar på raden men kan få <code>width</code>, <code>height</code> och lodrät <code>padding</code> – perfekt för menylänkar med klickbar yta.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Positionering</div>
+    <h2>Fem värden för <code>position</code></h2>
+    <div class="grid three">
+      <div class="card"><h3>static</h3><p>Standard. Elementet följer sidans normala flöde.</p></div>
+      <div class="card"><h3>relative</h3><p>Flyttas från sin plats med <code>top</code>, <code>right</code>, <code>bottom</code>, <code>left</code>.</p></div>
+      <div class="card"><h3>absolute</h3><p>Positioneras mot närmaste förälder med <code>position</code>. Lämnar flödet.</p></div>
+      <div class="card"><h3>fixed</h3><p>Fäst mot webbläsarfönstret – stannar även när du scrollar.</p></div>
+      <div class="card"><h3>sticky</h3><p>Som static tills du scrollar till en gräns – då följer den med.</p></div>
+    </div>
+    <div class="note warning"><div class="tag">Viktigt</div><p>Börja med sidans vanliga flöde. <code>position</code> är främst för överlägg, popups och små justeringar – inte en generell layoutlösning.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">relative + absolute</div>
+    <h2>Förälder och barn</h2>
+    <div class="grid">
+      <pre>.parent {
+  position: relative;
+  height: 150px;
+}
+.child {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+}</pre>
+      <div class="pos-parent">Förälder med position: relative
+        <div class="pos-child">Absolute</div>
+      </div>
+    </div>
+    <p class="muted">Den absoluta rutan placeras mot närmaste förälder som har <code>position</code> – och tar inte längre någon egen plats i flödet.</p>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">sticky</div>
+    <h2>En rubrik som följer med</h2>
+    <pre>h3 {
+  position: sticky;
+  top: 0;
+}</pre>
+    <div class="scroll-area">
+      <h3>Sticky: jag följer med</h3>
+      <p>Scrolla nedåt i den här rutan.</p>
+      <p class="space">Mer innehåll …</p>
+      <p class="space">Ännu mer innehåll …</p>
+    </div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Förutsäg · position</div>
+    <h2>Vilket värde passar?</h2>
+    <p class="lead">En meny ska ligga högst upp i fönstret och följa med när användaren scrollar – men bara så länge man är kvar i sidhuvudets område. Vilket <code>position</code>-värde passar?</p>
+    <button class="reveal">Visa svar</button>
+    <div class="answer"><p><code>position: sticky; top: 0;</code> – elementet ligger i flödet tills scrollgränsen nås, då följer det med.</p><p><code>fixed</code> skulle också stanna, men då lossnar elementet helt från flödet och ligger kvar även utanför sitt område.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Kombinera allt</div>
+    <h2>Header med navigation</h2>
+    <pre>.header {
+  position: sticky;
+  top: 0;
+  padding: 16px 24px;
+  border-bottom: 3px solid #3498db;
+  box-sizing: border-box;
+}
+.nav a {
+  display: inline-block;
+  padding: 12px 16px;
+  margin: 0 4px;
+}</pre>
+    <ul class="steps">
+      <li><span class="n">1</span><span><code>sticky</code> gör att headern följer med vid scroll.</span></li>
+      <li><span class="n">2</span><span><code>border-box</code> gör att padding inte spränger bredden.</span></li>
+      <li><span class="n">3</span><span><code>inline-block</code> ger länkar klickbar yta och avstånd.</span></li>
+    </ul>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Lektion 6 · Övningar</div>
+    <h2>Prova själv</h2>
+    <div class="exercises">
+      <div class="ex"><div class="n">1</div><p>Sätt <code>box-sizing: border-box;</code> på en låda med <code>width: 300px;</code>, <code>padding: 24px;</code> och <code>border: 3px solid;</code>. Hur bred blir den totalt? Kontrollera i DevTools.</p></div>
+      <div class="ex"><div class="n">2</div><p>Bygg två lådor med samma <code>width</code> men olika <code>box-sizing</code>. Förklara skillnaden för en kamrat.</p></div>
+      <div class="ex"><div class="n">3</div><p>Gör en <code>span</code> till <code>display: block;</code> och en <code>div</code> till <code>display: inline;</code>. Vad händer med layouten?</p></div>
+      <div class="ex"><div class="n">4</div><p>Bygg tre menylänkar med <code>display: inline-block;</code>, <code>padding: 12px 16px;</code> och <code>margin: 0 4px;</code>.</p></div>
+      <div class="ex"><div class="n">5</div><p>Testa <code>position: relative;</code> med <code>left: 32px;</code> på en ruta. Finns den gamla platsen kvar i flödet?</p></div>
+      <div class="ex"><div class="n">6</div><p>Lägg en ruta med <code>position: absolute;</code> inuti en förälder med <code>position: relative;</code>. Flytta den med <code>top</code>, <code>right</code>, <code>bottom</code> och <code>left</code>.</p></div>
+      <div class="ex"><div class="n">7</div><p>Bygg en header med <code>position: sticky; top: 0;</code> och scrolla. Stannar den kvar?</p></div>
+    </div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Lektion 6 · Avslut</div>
+    <h1>Klar när…</h1>
+    <ul class="steps">
+      <li><span class="n">✓</span><span>Du kan förklara skillnaden mellan <code>content-box</code> och <code>border-box</code> och räkna ut total bredd.</span></li>
+      <li><span class="n">✓</span><span>Du kan avgöra om ett element är block eller inline och vad det betyder för layouten.</span></li>
+      <li><span class="n">✓</span><span>Du kan använda <code>inline-block</code> för länkar som behöver padding.</span></li>
+      <li><span class="n">✓</span><span>Du kan välja rätt <code>position</code>-värde för en enkel situation, till exempel en sticky header.</span></li>
+    </ul>
+    <div class="note"><div class="tag">Nästa lektion</div><p>CSS-enheter – <code>px</code>, <code>%</code>, <code>em</code>, <code>rem</code> och <code>vw</code>/<code>vh</code> – med många små övningar.</p></div>
+  </div></section>
+
+</main><div class="nav"><span class="hint">← → navigera · mellanslag går framåt</span><span class="counter"><span id="cur">1</span> / <span id="total">1</span></span></div><script src="lektioner.js"></script></body>
+</html>

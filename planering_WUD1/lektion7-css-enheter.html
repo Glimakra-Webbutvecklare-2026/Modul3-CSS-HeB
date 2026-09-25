@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="sv">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Lektion 7 · CSS-enheter – px, %, em, rem och viewport</title>
+<link rel="stylesheet" href="lektioner.css">
+<style>
+  .unit-parent { padding: .9rem; border: 2px dashed #555; background: #f5f5f5; }
+  .unit-child { width: 80%; padding: .6rem; border: 2px solid #388e3c; background: #e8f5e9; font-weight: 700; }
+  .unit-bar { height: 1.1rem; border-radius: 4px; background: #1976d2; }
+  .unit-bar-label { margin-top: .4rem; color: var(--muted); font: .8rem ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+  .vw-demo { margin-top: 1.2rem; }
+  .vw-bar { width: 30vw; max-width: 100%; height: 1.2rem; border-radius: 4px; background: #1976d2; }
+  .vmin-square { display: flex; align-items: center; justify-content: center; width: 20vmin; height: 20vmin; border: 2px solid #c62828; background: #ffcdd2; font-weight: 700; }
+  .em-parent { padding: .8rem; border: 2px dashed #c62828; background: #fff5f5; font-size: 20px; }
+  .em-child { padding: .5em; border: 2px solid #c62828; background: #ffebee; font-size: 1.5em; font-weight: 700; }
+  .rem-demo p { margin-top: .35rem; }
+</style>
+</head>
+<body><div class="bar"></div><main class="deck">
+
+  <section class="slide active"><div class="slide-inner">
+    <div class="kicker">Vecka 39 · Lektion 7 · HeB</div>
+    <h1>CSS-enheter</h1>
+    <p class="lead">Pixlar, procent, em, rem, vw och vh. Små val som avgör om sidan är stel – eller följer skärmen och användaren.</p>
+    <p class="muted">Mål: kunna skilja på absoluta och relativa enheter och välja rätt enhet för text, layout och detaljer. Under lektionen: många små övningar.</p>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Översikt</div>
+    <h2>Två familjer av enheter</h2>
+    <div class="grid">
+      <div class="card"><h3>Absoluta enheter</h3><p>Har en fast storlek som inte ändras av sammanhanget.</p><small><code>px</code> – den enda vi använder på webben. <code>pt</code>, <code>cm</code>, <code>in</code> hör till tryck.</small></div>
+      <div class="card"><h3>Relativa enheter</h3><p>Räknas ut från något annat: föräldern, fontstorleken eller fönstret.</p><small><code>%</code> <code>em</code> <code>rem</code> <code>vw</code> <code>vh</code> <code>vmin</code></small></div>
+    </div>
+    <div class="note"><div class="tag">Dagens fråga</div><p>När är fast bättre än flexibelt – och tvärtom?</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">px · absolut enhet</div>
+    <h2>Pixlar – exakthet</h2>
+    <p class="lead">1px är 1/96 av en tum och har alltid samma storlek, oavsett element och fönster.</p>
+    <pre>border: 2px solid #333;                     <span class="c">/* exakt ram */</span>
+box-shadow: 0 4px 8px rgba(0,0,0,.1);       <span class="c">/* exakt skugga */</span>
+margin-top: 24px;                           <span class="c">/* exakt avstånd */</span></pre>
+    <div class="note"><div class="tag">Använd px till</div><p>Borders, skuggor och små detaljer. Inte till text och stora layouter.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Övning 1 · px</div>
+    <h2>Testa pixlar</h2>
+    <div class="exercises">
+      <div class="ex"><div class="n">1</div><p>Bygg en låda med <code>border: 2px solid;</code> och <code>margin: 24px;</code>. Ändra till <code>1px</code> och sedan <code>4px</code> – vad förändras?</p></div>
+      <div class="ex"><div class="n">2</div><p>Lägg till <code>box-shadow: 0 4px 8px rgba(0,0,0,.1);</code>. Testa <code>0 2px 4px</code> i stället – vilken känns rätt?</p></div>
+      <div class="ex"><div class="n">3</div><p>Dra i webbläsarfönstret. Ändras kanten eller skuggan? Varför inte?</p></div>
+    </div>
+    <div class="note safe"><div class="tag">Kontroll</div><p>Kanten och skuggan står still oavsett fönsterstorlek – det är det absoluta.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">% · relativt föräldern</div>
+    <h2>Procent – av förälderns bredd</h2>
+    <pre>.container {
+  width: 80%;         <span class="c">/* 80 % av förälderns bredd */</span>
+  max-width: 1200px;  <span class="c">/* men aldrig mer */</span>
+  margin: 0 auto;     <span class="c">/* centrera */</span>
+}</pre>
+    <div class="unit-parent">Förälder (100 %)
+      <div class="unit-child">Barn: width 80 %</div>
+    </div>
+    <div class="note warning"><div class="tag">Kom ihåg</div><p>Procent räknas alltid från <strong>föräldern</strong>. Ändra förälderns bredd och barnet följer med. (<code>float</code> i äldre exempel är historisk layout – Flexbox och Grid kommer senare.)</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Övning 2 · %</div>
+    <h2>Testa procent</h2>
+    <div class="exercises">
+      <div class="ex"><div class="n">1</div><p>Lägg en låda med <code>width: 80%;</code> inuti en förälder. Ändra till <code>50%</code> – hur mycket mer tom yta blir det i föräldern?</p></div>
+      <div class="ex"><div class="n">2</div><p>Ge föräldern <code>width: 60%;</code>. Följer barnet med när föräldern krymper?</p></div>
+      <div class="ex"><div class="n">3</div><p>Lägg till <code>max-width: 600px;</code> och <code>margin: 0 auto;</code> på en container. Vad händer i ett smalt fönster – och i ett brett?</p></div>
+    </div>
+    <div class="note safe"><div class="tag">Kontroll</div><p><code>%</code> + <code>max-width</code> gör sidan flexibel men aldrig bredare än du vill.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">em · relativt förälderns font</div>
+    <h2>em – relativt texten omkring</h2>
+    <p class="lead">1em = förälderns <code>font-size</code>. Är föräldern 20px är 1em = 20px.</p>
+    <div class="grid">
+      <pre>.parent { font-size: 20px; }
+.child {
+  font-size: 1.5em;  <span class="c">/* 30px */</span>
+  padding: .5em;     <span class="c">/* 15px – EGEN font */</span>
+}</pre>
+      <div class="em-parent">Förälder 20px
+        <div class="em-child">Barn 1.5em = 30px</div>
+      </div>
+    </div>
+    <div class="note warning"><div class="tag">Nesting-problemet</div><p><code>em</code> ärver sammanhang: 1.2em inuti 1.2em blir 1.44. Därför är <code>rem</code> oftast tryggare.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Övning 3 · em · förutsäg</div>
+    <h2>Räkna med em</h2>
+    <p class="lead">Föräldern är 20px. Barnet har <code>font-size: 1.5em;</code> och <code>padding: .5em;</code>. Hur stor blir texten – och hur stor blir paddingen?</p>
+    <button class="reveal">Visa svar</button>
+    <div class="answer">
+      <p><strong>Text:</strong> 1.5 × 20 = <strong>30px</strong>.</p>
+      <p><strong>Padding:</strong> .5 × 30 = <strong>15px</strong> – padding räknas på elementets <em>egen</em> fontstorlek.</p>
+      <p class="muted">Följdfråga: ändra föräldern till 24px. Vad händer? (Text 36px, padding 18px.)</p>
+    </div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">rem · relativt root</div>
+    <h2>rem – relativt rotfonten</h2>
+    <p class="lead">1rem = <code>html</code>-elementets fontstorlek. Standard i webbläsaren är 16px.</p>
+    <div class="grid">
+      <pre>.heading {
+  font-size: 2rem;      <span class="c">/* 32px */</span>
+  margin-bottom: 1rem;  <span class="c">/* 16px */</span>
+}
+.small-text {
+  font-size: .875rem;   <span class="c">/* 14px */</span>
+}</pre>
+      <div class="rem-demo">
+        <p style="font-size:2rem;">2rem = 32px</p>
+        <p style="font-size:1.25rem;">1.25rem = 20px</p>
+        <p style="font-size:.875rem;">.875rem = 14px</p>
+      </div>
+    </div>
+    <div class="note safe"><div class="tag">Därför rem</div><p>Förutsägbar, påverkas inte av nesting och respekterar användarens inställningar. Första valet för text och spacing.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Övning 4 · rem</div>
+    <h2>Testa rem</h2>
+    <div class="exercises">
+      <div class="ex"><div class="n">1</div><p>Gör om <code>margin: 24px;</code>, <code>padding: 16px;</code> och <code>font-size: 20px;</code> till rem. Utgå från 16px root.</p></div>
+      <div class="ex"><div class="n">2</div><p>Lägg till <code>html { font-size: 20px; }</code> tillfälligt. Vad händer med allt som är satt i rem?</p></div>
+      <div class="ex"><div class="n">3</div><p>Ta bort regeln igen. Varför är det en fördel att sidan skalar med användarens inställning?</p></div>
+    </div>
+    <div class="note safe"><div class="tag">Kontroll</div><p>24px = 1.5rem · 16px = 1rem · 20px = 1.25rem. Med 20px root blir 1rem plötsligt 20px – hela sidan följer med.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Jämförelse</div>
+    <h2>em eller rem?</h2>
+    <table class="table">
+      <tr><th></th><th>em</th><th>rem</th></tr>
+      <tr><td>Räknas från</td><td>förälderns font-size</td><td>rootens font-size</td></tr>
+      <tr><td>Påverkas av nesting</td><td>Ja</td><td>Nej</td></tr>
+      <tr><td>Förutsägbar</td><td>Nej</td><td>Ja</td></tr>
+      <tr><td>Bra för</td><td>padding/margin som ska skala med lokal text</td><td>text, spacing och hela designen</td></tr>
+    </table>
+    <div class="note"><div class="tag">Regel</div><p><code>rem</code> för text och spacing. <code>em</code> när du medvetet vill skala med den lokala texten.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Övning 5 · em vs rem · förutsäg</div>
+    <h2>Samma kod – olika resultat?</h2>
+    <pre><span class="c">/* A */</span> .parent { font-size: 1.2em; }  .child { font-size: 1.2em; }
+<span class="c">/* B */</span> .parent { font-size: 1.2rem; } .child { font-size: 1.2rem; }</pre>
+    <p class="lead">Roten är 16px. Hur stor blir <code>.child</code> i A respektive B?</p>
+    <button class="reveal">Visa svar</button>
+    <div class="answer">
+      <p><strong>A:</strong> 1.2 × 1.2 × 16 = <strong>23,04px</strong> – em multipliceras genom leden.</p>
+      <p><strong>B:</strong> 1.2 × 16 = <strong>19,2px</strong> – rem räknas alltid från roten.</p>
+      <p class="muted">Samma siffror i koden, olika resultat. Det är därför rem rekommenderas.</p>
+    </div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">vw · vh · vmin · vmax</div>
+    <h2>Enheter för fönstret</h2>
+    <div class="terms">
+      <div><span class="t">vw</span><span class="d">1vw = 1 % av fönstrets bredd</span></div>
+      <div><span class="t">vh</span><span class="d">1vh = 1 % av fönstrets höjd</span></div>
+      <div><span class="t">vmin</span><span class="d">1 % av den mindre sidan (bredd eller höjd)</span></div>
+      <div><span class="t">vmax</span><span class="d">1 % av den större sidan</span></div>
+    </div>
+    <pre>.hero   { height: 100vh; }
+.square { width: 50vmin; height: 50vmin; }
+h1      { font-size: clamp(1.5rem, 5vw, 3rem); }  <span class="c">/* skalas men begränsas */</span></pre>
+    <div class="vw-demo">
+      <div class="vw-bar"></div>
+      <div class="unit-bar-label">width: 30vw – ändra fönstrets bredd och se</div>
+    </div>
+    <div class="note warning"><div class="tag">Mobilfällan</div><p>Undvik <code>height: 100vh</code> på mobil – verktygsfältet ändrar höjden. Använd <code>min-height: 100vh</code>.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Övning 6 · viewport</div>
+    <h2>Testa viewport-enheter</h2>
+    <div class="exercises">
+      <div class="ex"><div class="n">1</div><p>Gör en sektion med <code>height: 100vh;</code> och en bakgrundsfärg. Byt till <code>min-height</code> – vad blir skillnaden?</p></div>
+      <div class="ex"><div class="n">2</div><p>Gör en kvadrat med <code>width: 50vmin; height: 50vmin;</code>. Ändra fönsterstorlek – förblir den kvadratisk?</p></div>
+      <div class="ex"><div class="n">3</div><p>Sätt <code>font-size: 5vw;</code> på en rubrik. Dra i fönstret – när blir texten för stor? Begränsa med <code>clamp()</code>.</p></div>
+    </div>
+    <div class="note safe"><div class="tag">Kontroll</div><p>Viewport-enheter följer fönstret utan media queries – men kombinera gärna med <code>max-width</code> eller <code>clamp()</code>.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Sammanfattning</div>
+    <h2>Vilken enhet när?</h2>
+    <table class="table">
+      <tr><th>Användningsområde</th><th>Enhet</th><th>Exempel</th></tr>
+      <tr><td>Text och spacing</td><td><code>rem</code></td><td><code>font-size: 1.25rem;</code></td></tr>
+      <tr><td>Layoutbredder</td><td><code>%</code> + <code>max-width</code></td><td><code>width: 100%; max-width: 1200px;</code></td></tr>
+      <tr><td>Borders och detaljer</td><td><code>px</code></td><td><code>border: 1px solid #ccc;</code></td></tr>
+      <tr><td>Höjd och hero</td><td><code>vh</code>, <code>vw</code>, <code>vmin</code></td><td><code>min-height: 100vh;</code></td></tr>
+      <tr><td>Radavstånd</td><td>enhetlöst tal</td><td><code>line-height: 1.6;</code></td></tr>
+    </table>
+    <div class="note"><div class="tag">Blanda medvetet</div><p><code>px</code> för detaljer, <code>rem</code> för text, <code>%</code> för bredder.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Övning 7 · kombinera</div>
+    <h2>Bygg ett kort med rätt enheter</h2>
+    <div class="exercises">
+      <div class="ex"><div class="n">1</div><p><code>width: 100%; max-width: 400px; margin: 0 auto 2rem;</code></p></div>
+      <div class="ex"><div class="n">2</div><p><code>padding: 1.5rem; border: 1px solid #e0e0e0; border-radius: .5rem;</code></p></div>
+      <div class="ex"><div class="n">3</div><p>Titeln <code>1.25rem</code>, texten <code>1rem</code> och <code>line-height: 1.6;</code> (utan enhet).</p></div>
+      <div class="ex"><div class="n">4</div><p>Ändra fönstrets bredd. Vad är flexibelt i kortet – och vad är fast?</p></div>
+    </div>
+    <div class="note safe"><div class="tag">Kontroll</div><p>Bredden följer föräldern upp till 400px. Padding och text följer rem. Kanten står still.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Vanliga misstag</div>
+    <h2>Gör inte så här</h2>
+    <div class="goodbad">
+      <div class="row"><span class="mark bad">✗</span><span><code>em</code> för allt <span class="muted">– 1.2em inuti 1.2em blir 1.44, inte 1.2.</span></span></div>
+      <div class="row"><span class="mark good">✓</span><span><code>rem</code> för förutsägbarhet <span class="muted">– räknas alltid från roten.</span></span></div>
+      <div class="row"><span class="mark bad">✗</span><span><code>height: 100vh</code> på mobil <span class="muted">– verktygsfältet ger scrollbars.</span></span></div>
+      <div class="row"><span class="mark good">✓</span><span><code>min-height: 100vh</code> <span class="muted">– minst full höjd, utan att låsa.</span></span></div>
+      <div class="row"><span class="mark bad">✗</span><span><code>px</code> på allt <span class="muted">– stel sida som ignorerar användarens inställningar.</span></span></div>
+      <div class="row"><span class="mark good">✓</span><span><code>rem</code> och <code>%</code> för text och layout <span class="muted">– sidan följer med.</span></span></div>
+    </div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Övning 8 · rätta enheterna</div>
+    <h2>Gör den stela CSS:en flexibel</h2>
+    <p class="lead">Koden fungerar – men den är stel. Byt till lämpliga enheter.</p>
+    <pre>.card {
+  width: 400px;            <span class="c">/* ska vara flexibel upp till 400px */</span>
+  padding: 24px;           <span class="c">/* ska skala med texten */</span>
+  border: 1px solid #ccc;  <span class="c">/* behåll */</span>
+  margin-bottom: 32px;
+}
+h2 { font-size: 20px; }    <span class="c">/* ska följa användarens inställning */</span>
+.hero { height: 900px; }   <span class="c">/* ska vara minst full skärmhöjd */</span></pre>
+    <button class="reveal">Visa lösning</button>
+    <div class="answer">
+      <pre style="margin-top:.4rem;">.card { width: 100%; max-width: 400px; padding: 1.5rem;
+        border: 1px solid #ccc; margin-bottom: 2rem; }
+h2    { font-size: 1.25rem; }
+.hero { min-height: 100vh; }</pre>
+    </div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Mini-projekt · hero</div>
+    <h2>En hero som följer skärmen</h2>
+    <div class="exercises">
+      <div class="ex"><div class="n">1</div><p>Sektion med <code>min-height: 100vh;</code> och en bakgrund (gärna en gradient). Varför min-height?</p></div>
+      <div class="ex"><div class="n">2</div><p>Rubrik med <code>font-size: 6vw;</code>, <code>max-width: 800px;</code> och <code>margin: 0 auto;</code>.</p></div>
+      <div class="ex"><div class="n">3</div><p><code>padding: 25vh 2rem;</code> och <code>text-align: center;</code> – centrera innehållet.</p></div>
+      <div class="ex"><div class="n">4</div><p>Knapp: <code>padding: 1rem 2rem;</code>, <code>font-size: 1.125rem;</code>, <code>border-radius: .5rem;</code>.</p></div>
+    </div>
+    <div class="note safe"><div class="tag">Kontroll</div><p>Texten skalas med skärmbredden men begränsas av <code>max-width</code> – och sidan fungerar även på mobil.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Lektion 7 · Avslut</div>
+    <h1>Klar när…</h1>
+    <ul class="steps">
+      <li><span class="n">✓</span><span>Du kan skilja på <strong>absoluta</strong> och <strong>relativa</strong> enheter.</span></li>
+      <li><span class="n">✓</span><span>Du kan räkna om mellan px och rem (16px = 1rem).</span></li>
+      <li><span class="n">✓</span><span>Du kan förklara varför <code>rem</code> ofta är bättre än <code>em</code> för text.</span></li>
+      <li><span class="n">✓</span><span>Du kan bygga en flexibel container med <code>%</code>, <code>max-width</code> och <code>margin: 0 auto</code>.</span></li>
+      <li><span class="n">✓</span><span>Du kan använda viewport-enheter och förklara risken med <code>100vh</code>.</span></li>
+    </ul>
+    <div class="note"><div class="tag">Nästa lektion</div><p>Flexbox och CSS Grid – då bygger vi hela sidans layout.</p></div>
+  </div></section>
+
+</main><div class="nav"><span class="hint">← → navigera · mellanslag går framåt</span><span class="counter"><span id="cur">1</span> / <span id="total">1</span></span></div><script src="lektioner.js"></script></body>
+</html>
