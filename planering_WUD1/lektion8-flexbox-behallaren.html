@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="sv">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Lektion 8 · Layout: flex vs grid, och flex-behållaren</title>
+<link rel="stylesheet" href="lektioner.css">
+<style>
+  .fx-label { margin: .85rem 0 .3rem; color: var(--muted); font-size: .72rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+  .fx-row, .fx-col, .al, .wrap-box {
+    display: flex;
+    gap: .45rem;
+    padding: .5rem;
+    border: 2px dashed #555;
+    background: #f5f5f5;
+  }
+  .fx-row span, .fx-col span, .al span, .wrap-box span {
+    padding: .45rem .75rem;
+    border: 2px solid #1976d2;
+    background: #e3f2fd;
+    font-weight: 700;
+  }
+  .fx-col { flex-direction: column; align-items: flex-start; max-width: 12rem; }
+  .j-center { justify-content: center; }
+  .j-between { justify-content: space-between; }
+  .al { align-items: center; height: 7.5rem; margin-top: .4rem; }
+  .al.stretch { align-items: stretch; }
+  .al .tall { padding-top: 1.1rem; padding-bottom: 1.1rem; border-color: #f9a825; background: #fff3bf; }
+  .gap-row { display: flex; margin-top: .4rem; padding: .5rem; border: 2px dashed #555; background: #f5f5f5; }
+  .gap-row span { padding: .45rem .75rem; border: 2px solid #1976d2; background: #e3f2fd; font-weight: 700; }
+  .gap-row.mellan span { margin-right: 1rem; }
+  .gap-row.lucka { gap: 1rem; }
+  .wrap-box { flex-wrap: wrap; width: 22rem; max-width: 100%; min-width: 11rem; resize: horizontal; overflow: auto; }
+  .wrap-box span { min-width: 7rem; text-align: center; }
+  .axis-name { margin-bottom: .35rem; color: var(--muted); font-size: .72rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+</style>
+</head>
+<body><div class="bar"></div><main class="deck">
+
+  <section class="slide active"><div class="slide-inner">
+    <div class="kicker">Vecka 40 · Lektion 8 · HeB</div>
+    <h1>Layout: flex vs grid</h1>
+    <p class="lead">Två sätt att bygga layout. De löser olika problem, och på en riktig sida används de nästan alltid tillsammans.</p>
+    <div class="grid">
+      <div class="card"><h3>Flex</h3><p>En riktning i taget: en rad eller en kolumn.</p><small>Navigation, knapprad, centrering, kort på rad, innehållet inuti ett kort.</small></div>
+      <div class="card"><h3>Grid</h3><p>Rader och kolumner på samma gång.</p><small>Sidans skelett, bildgalleri, formulär i kolumner, dashboard.</small></div>
+    </div>
+    <div class="note"><div class="tag">Så används de</div><p>Grid ritar sidan. Flex ordnar det som ligger inuti en ruta.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Idag · flex-behållaren</div>
+    <h2>Först en rad eller en kolumn</h2>
+    <p class="lead">Flex ordnar barnen längs en axel. Idag styr vi behållaren. Imorgon bestämmer barnen hur stora de är.</p>
+    <ul class="steps">
+      <li><span class="n">1</span><span><code>display: flex</code> gör elementet till en flex-behållare.</span></li>
+      <li><span class="n">2</span><span><code>flex-direction</code> väljer rad eller kolumn.</span></li>
+      <li><span class="n">3</span><span><code>justify-content</code>, <code>align-items</code>, <code>gap</code> och <code>flex-wrap</code> fördelar barnen.</span></li>
+    </ul>
+    <p class="muted">Mål: kunna lägga saker på rad eller i kolumn och styra avstånd och justering utan <code>position</code>.</p>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">display: flex</div>
+    <h2>Barnen lägger sig på rad</h2>
+    <pre>.rad { display: flex; }</pre>
+    <div class="fx-label">Utan flex · block</div>
+    <div class="fx-col" style="display:block;max-width:16rem"><span style="display:block;margin-top:.35rem">Ett</span><span style="display:block;margin-top:.35rem">Två</span><span style="display:block;margin-top:.35rem">Tre</span></div>
+    <div class="fx-label">Med display: flex</div>
+    <div class="fx-row"><span>Ett</span><span>Två</span><span>Tre</span></div>
+    <p class="muted">Bara behållaren får <code>display: flex</code>. Barnen blir flex-objekt automatiskt.</p>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">flex-direction</div>
+    <h2>Rad eller kolumn</h2>
+    <div class="grid">
+      <div>
+        <div class="axis-name">row · standard</div>
+        <div class="fx-row"><span>Hem</span><span>Om</span><span>Kontakt</span></div>
+      </div>
+      <div>
+        <div class="axis-name">column</div>
+        <div class="fx-col"><span>Hem</span><span>Om</span><span>Kontakt</span></div>
+      </div>
+    </div>
+    <pre>.meny { flex-direction: column; }</pre>
+    <div class="note"><div class="tag">row-reverse</div><p><code>row-reverse</code> och <code>column-reverse</code> finns, men de vänder bara ordningen visuellt. Låt HTML-ordningen vara läsordningen.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Övning · navbar</div>
+    <h2>En meny på en rad</h2>
+    <pre>&lt;header class="navbar"&gt;
+  &lt;a class="logo" href="#"&gt;Studio&lt;/a&gt;
+  &lt;nav&gt;
+    &lt;a href="#"&gt;Hem&lt;/a&gt;
+    &lt;a href="#"&gt;Om&lt;/a&gt;
+    &lt;a href="#"&gt;Kontakt&lt;/a&gt;
+  &lt;/nav&gt;
+&lt;/header&gt;</pre>
+    <div class="exercises">
+      <div class="ex"><div class="n">1</div><p>Klistra in HTML:en. <code>nav</code> är block, så menyn hamnar under logotypen.</p></div>
+      <div class="ex"><div class="n">2</div><p><code>.navbar { display: flex; }</code> och <code>nav { display: flex; }</code>. Logotypen och menyn hamnar bredvid varandra, och länkarna ligger på en rad.</p></div>
+      <div class="ex"><div class="n">3</div><p>Sätt <code>flex-direction: column</code> på <code>nav</code>. Länkarna staplas. Byt tillbaka till <code>row</code>.</p></div>
+    </div>
+    <div class="note safe"><div class="tag">Kontroll</div><p>Logotypen till vänster, Hem · Om · Kontakt på samma rad. Avstånd och <code>space-between</code> kommer strax.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Axlarna</div>
+    <h2>justify följer riktningen</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>direction: row</h3>
+        <p><code>justify-content</code> styr vågrätt. <code>align-items</code> styr lodrätt.</p>
+      </div>
+      <div class="card">
+        <h3>direction: column</h3>
+        <p><code>justify-content</code> styr lodrätt. <code>align-items</code> styr vågrätt.</p>
+      </div>
+    </div>
+    <div class="note"><div class="tag">Huvudaxel</div><p>Huvudaxeln är den riktning <code>flex-direction</code> pekar. Tväraxeln ligger tvärs emot. Byt riktning, så byter egenskaperna jobb.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">justify-content</div>
+    <h2>Fördela längs huvudaxeln</h2>
+    <div class="fx-label">flex-start · standard</div>
+    <div class="fx-row"><span>Ett</span><span>Två</span><span>Tre</span></div>
+    <div class="fx-label">center</div>
+    <div class="fx-row j-center"><span>Ett</span><span>Två</span><span>Tre</span></div>
+    <div class="fx-label">space-between</div>
+    <div class="fx-row j-between"><span>Ett</span><span>Två</span><span>Tre</span></div>
+    <p class="muted">Också vanliga: <code>flex-end</code>, <code>space-around</code> och <code>space-evenly</code>. <code>space-between</code> är navens klassiker: första barnet till vänster, sista till höger.</p>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Förutsäg · axeln</div>
+    <h2>Knapparna ska isär, uppifrån och ner</h2>
+    <pre>.knappkolumn {
+  display: flex;
+  flex-direction: column;
+  min-height: 16rem;
+}</pre>
+    <p class="lead">Det ska vara lika stort mellanrum mellan knapparna i höjdled. Vilken egenskap lägger du till?</p>
+    <button class="reveal">Visa svar</button>
+    <div class="answer">
+      <p><code>justify-content: space-between;</code></p>
+      <p>Riktningen är <code>column</code>, så huvudaxeln är lodrät. <code>align-items</code> skulle flytta knapparna i sidled.</p>
+    </div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">align-items</div>
+    <h2>Tvärs mot raden</h2>
+    <div class="grid">
+      <div>
+        <div class="fx-label">stretch · standard</div>
+        <div class="al stretch"><span>Kort</span><span class="tall">Högre</span><span>Kort</span></div>
+      </div>
+      <div>
+        <div class="fx-label">center</div>
+        <div class="al"><span>Kort</span><span class="tall">Högre</span><span>Kort</span></div>
+      </div>
+    </div>
+    <pre>.rad { align-items: center; }   <span class="c">/* också: flex-start, flex-end, stretch */</span></pre>
+    <p class="muted">Centrera ett enda barn både vågrätt och lodrätt: <code>justify-content: center</code> och <code>align-items: center</code> på samma behållare.</p>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">gap</div>
+    <h2>Mellanrum bara mellan barnen</h2>
+    <div class="fx-label">margin-right på varje barn</div>
+    <div class="gap-row mellan"><span>Ett</span><span>Två</span><span>Tre</span></div>
+    <div class="fx-label">gap på behållaren</div>
+    <div class="gap-row lucka"><span>Ett</span><span>Två</span><span>Tre</span></div>
+    <pre>.rad { display: flex; gap: 1rem; }
+<span class="c">/* gap: 1rem 2rem;  →  rad | kolumn */</span></pre>
+    <div class="note"><div class="tag">Varför gap</div><p><code>margin</code> på barnen ger också luft utanför sista barnet. <code>gap</code> ligger bara mellan dem. Samma egenskap kommer tillbaka i Grid.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Övning · samma navbar</div>
+    <h2>Logotyp till vänster, meny till höger</h2>
+    <p class="lead">Fortsätt i filen från navbar-övningen. <code>.navbar</code> och <code>nav</code> har redan <code>display: flex</code>.</p>
+    <div class="exercises">
+      <div class="ex"><div class="n">1</div><p><code>justify-content: space-between</code> på <code>.navbar</code>. Logotypen går till vänster, menyn till höger.</p></div>
+      <div class="ex"><div class="n">2</div><p><code>align-items: center</code> på <code>.navbar</code>. Logotyp och länkar linjerar på höjden.</p></div>
+      <div class="ex"><div class="n">3</div><p><code>gap: 1rem</code> på <code>nav</code>. Hem, Om och Kontakt får luft mellan sig, inte utanför menyn.</p></div>
+    </div>
+    <div class="note safe"><div class="tag">Kontroll</div><p>En rad: Studio längst till vänster, tre länkar med mellanrum längst till höger, i mitten på höjden.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">flex-wrap</div>
+    <h2>När raden tar slut</h2>
+    <pre>.rad {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+}</pre>
+    <div class="wrap-box"><span>Ett</span><span>Två</span><span>Tre</span><span>Fyra</span></div>
+    <p class="muted">Dra i rutans nedre högra hörn. Standard är <code>nowrap</code>: barnen klämmer ihop sig på en rad. <code>wrap</code> låter dem fortsätta på nästa rad.</p>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Tre mönster</div>
+    <h2>Det här bygger du med behållaren</h2>
+    <div class="grid three">
+      <div class="card"><h3>Centrera en ruta</h3><p><code>justify-content: center;</code><br><code>align-items: center;</code><br><code>min-height: 100vh;</code></p></div>
+      <div class="card"><h3>Nav</h3><p><code>justify-content: space-between;</code><br><code>align-items: center;</code><br><code>gap: 1rem;</code></p></div>
+      <div class="card"><h3>Meny i kolumn</h3><p><code>flex-direction: column;</code><br><code>gap: .5rem;</code></p></div>
+    </div>
+    <div class="note"><div class="tag">Inte position</div><p>De här tre klarar du utan <code>position</code>. Spara <code>absolute</code> till överlägg.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Övning · samma rad</div>
+    <h2>Tre kort, ett steg i taget</h2>
+    <pre>&lt;div class="rad"&gt;
+  &lt;div class="kort"&gt;Ett&lt;/div&gt;
+  &lt;div class="kort"&gt;Två&lt;/div&gt;
+  &lt;div class="kort"&gt;Tre&lt;/div&gt;
+&lt;/div&gt;</pre>
+    <div class="exercises">
+      <div class="ex"><div class="n">1</div><p><code>.rad { display: flex; gap: 1rem; }</code> och en kant på <code>.kort</code>. De ska ligga på en rad.</p></div>
+      <div class="ex"><div class="n">2</div><p>Lägg till <code>justify-content: space-between;</code>. Första och sista kortet går åt varsitt håll.</p></div>
+      <div class="ex"><div class="n">3</div><p>Lägg till <code>min-height: 10rem;</code> och <code>align-items: center;</code>. Korten hamnar i mitten på höjden.</p></div>
+      <div class="ex"><div class="n">4</div><p>Lägg till <code>flex-wrap: wrap;</code> och <code>min-width: 10rem;</code> på <code>.kort</code>. Gör fönstret smalt. Korten byter rad.</p></div>
+    </div>
+    <div class="note safe"><div class="tag">Spara filen</div><p>Samma tre kort används igen i nästa lektion, när barnen får bestämma bredden.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Lektion 8 · Avslut</div>
+    <h1>Klar när…</h1>
+    <ul class="steps">
+      <li><span class="n">✓</span><span>Du kan säga när flex passar bättre än grid: en rad eller en kolumn.</span></li>
+      <li><span class="n">✓</span><span>Du kan välja <code>flex-direction</code> och vet att <code>justify-content</code> följer den riktningen.</span></li>
+      <li><span class="n">✓</span><span>Du kan centrera, sprida isär och ge jämna luckor med <code>gap</code>.</span></li>
+      <li><span class="n">✓</span><span>Du kan låta en rad bryta med <code>flex-wrap</code>.</span></li>
+    </ul>
+    <div class="note"><div class="tag">Nästa lektion</div><p>Samma rad, men nu styr barnen: <code>flex-grow</code>, <code>flex-shrink</code>, <code>flex-basis</code> och en kortrad.</p></div>
+  </div></section>
+
+</main><div class="nav"><span class="hint">← → navigera · mellanslag går framåt</span><span class="counter"><span id="cur">1</span> / <span id="total">1</span></span></div><script src="lektioner.js"></script></body>
+</html>

@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="sv">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Lektion 9 · Flexbox – barnen</title>
+<link rel="stylesheet" href="lektioner.css">
+<style>
+  .terms .t { width: 11rem; }
+  .row {
+    display: flex;
+    gap: .45rem;
+    margin-top: .8rem;
+    padding: .5rem;
+    border: 2px dashed #555;
+    background: #f5f5f5;
+  }
+  .row span, .sok, .knapp {
+    padding: .55rem .8rem;
+    border: 2px solid #1976d2;
+    background: #e3f2fd;
+    font-weight: 700;
+    text-align: center;
+  }
+  .basis span:first-child { flex-basis: 40%; background: #fff3bf; border-color: #f9a825; }
+  .grow span { flex-grow: 1; flex-basis: 0; }
+  .grow .dubbel { flex-grow: 2; background: #fff3bf; border-color: #f9a825; }
+  .tight { width: 18rem; max-width: 100%; overflow: auto; }
+  .tight span { flex: 1 1 8rem; }
+  .tight .fast { flex-shrink: 0; background: #ffebee; border-color: #c62828; }
+  .verktyg { align-items: center; }
+  .sok { flex: 1; }
+  .knapp { flex: 0 0 auto; }
+  .self { align-items: center; height: 8rem; }
+  .self .end { align-self: flex-end; background: #fff3bf; border-color: #f9a825; }
+</style>
+</head>
+<body><div class="bar"></div><main class="deck">
+
+  <section class="slide active"><div class="slide-inner">
+    <div class="kicker">Vecka 40 · Lektion 9 · HeB</div>
+    <h1>Barnen i flexboxen</h1>
+    <p class="lead">Behållaren bestämmer riktning och justering. Barnet bestämmer om det får växa, krympa och hur brett det vill börja.</p>
+    <p class="muted">Mål: kunna göra kort lika breda, låta ett fält ta resten av raden och hålla en sidospalt på en fast bredd.</p>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Repetition</div>
+    <h2>Behållaren från förra lektionen</h2>
+    <div class="terms">
+      <div><span class="t">flex-direction</span><span class="d">rad eller kolumn – det är huvudaxeln</span></div>
+      <div><span class="t">justify-content</span><span class="d">fördelar barnen längs huvudaxeln</span></div>
+      <div><span class="t">align-items</span><span class="d">justerar barnen på tväraxeln</span></div>
+      <div><span class="t">gap / flex-wrap</span><span class="d">luckor mellan barnen, och ny rad när det tar slut</span></div>
+    </div>
+    <p class="muted">Inget av det säger hur brett ett enskilt kort ska vara. Det gör barnen.</p>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Tre reglage</div>
+    <h2>basis, grow och shrink</h2>
+    <div class="grid three">
+      <div class="card"><h3>flex-basis</h3><p>Hur brett barnet vill börja, innan det blir yta över eller ont om plats.</p></div>
+      <div class="card"><h3>flex-grow</h3><p>Hur stor del av ytan som blir över barnet tar. <code>0</code> betyder: väx inte.</p></div>
+      <div class="card"><h3>flex-shrink</h3><p>Om barnet får krympa när raden är för smal. Standard är <code>1</code>: ja.</p></div>
+    </div>
+    <div class="note"><div class="tag">Standard</div><p>Om du inte skriver något är det <code>flex: 0 1 auto</code>. Barnet växer inte, det får krympa, och startbredden är innehållets bredd.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">flex-basis</div>
+    <h2>Startbredden</h2>
+    <pre>.första { flex-basis: 40%; }   <span class="c">/* de andra: auto */</span></pre>
+    <div class="row basis"><span>40 %</span><span>auto</span><span>auto</span></div>
+    <p class="muted"><code>auto</code> betyder ungefär: så brett som innehållet, eller som <code>width</code> om du satt en. <code>flex-basis</code> vinner över <code>width</code> när båda finns.</p>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">flex-grow</div>
+    <h2>Dela på ytan som blir över</h2>
+    <pre>.kort { flex-grow: 1; flex-basis: 0; }
+.mitt { flex-grow: 2; }</pre>
+    <div class="row grow"><span>1</span><span class="dubbel">2</span><span>1</span></div>
+    <div class="note"><div class="tag">basis 0</div><p>Med <code>flex-basis: 0</code> räknas inte textens bredd in först. Då blir bredden verkligen 1 mot 2 mot 1. Sätter du bara <code>flex-grow: 1</code> är basis fortfarande <code>auto</code>, och innehållet påverkar.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">flex-shrink</div>
+    <h2>När raden är för smal</h2>
+    <pre>.kort { flex: 1 1 8rem; }
+.fast { flex-shrink: 0; }   <span class="c">/* den här vägrar krympa */</span></pre>
+    <div class="row tight"><span>krymper</span><span class="fast">fast 8rem</span><span>krymper</span></div>
+    <p class="muted">Rutan är 18rem och varje barn vill ha 8rem. De som får krympa ger sig. Den röda behåller sin bredd – då får de andra ta smällen.</p>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Kortformen</div>
+    <h2><code>flex</code> är tre värden</h2>
+    <pre>flex: 1;          <span class="c">/* grow 1, shrink 1, basis 0 */</span>
+flex: 2;          <span class="c">/* dubbelt så stor del */</span>
+flex: 0 0 12rem;  <span class="c">/* väx inte, krymp inte, 12rem */</span>
+flex: 0 0 auto;   <span class="c">/* så bred som innehållet */</span></pre>
+    <div class="row verktyg"><span class="sok">Sökfält · flex: 1</span><span class="knapp">Sök</span></div>
+    <div class="note"><div class="tag">Lika kort</div><p>Skriv <code>flex: 1</code>, inte bara <code>flex-grow: 1</code>, när korten ska dela raden lika. Basis 0 gör att textlängden inte snedvrider dem.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Förutsäg · flex</div>
+    <h2>Fältet tar resten, knappen inte</h2>
+    <p class="lead">Ett sökfält ska fylla det som blir över på raden. Knappen ska vara så bred som ordet ”Sök” och inte krympa. Vilka två <code>flex</code>-värden?</p>
+    <button class="reveal">Visa svar</button>
+    <div class="answer">
+      <pre style="margin-top:.4rem;">.sok   { flex: 1; }
+.knapp { flex: 0 0 auto; }</pre>
+      <p><code>flex: 1</code> delar på ledig yta. <code>0 0 auto</code> låser knappen vid innehållets bredd.</p>
+    </div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">align-self</div>
+    <h2>Ett barn som bryter mönstret</h2>
+    <pre>.rad  { align-items: center; }
+.sista { align-self: flex-end; }</pre>
+    <div class="row self"><span>center</span><span>center</span><span class="end">flex-end</span></div>
+    <p class="muted"><code>align-items</code> gäller alla barn. <code>align-self</code> skriver över det för ett enda. Samma värden: <code>flex-start</code>, <code>center</code>, <code>flex-end</code>, <code>stretch</code>.</p>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Övning · navbar</div>
+    <h2>Sökfältet tar resten</h2>
+    <p class="lead">Behåll CSS:en från lektion 8. Byt innehållet i <code>.navbar</code> mot det här.</p>
+    <pre>&lt;header class="navbar"&gt;
+  &lt;a class="logo" href="#"&gt;Studio&lt;/a&gt;
+  &lt;input class="sok" type="search" placeholder="Sök"&gt;
+  &lt;button&gt;Sök&lt;/button&gt;
+&lt;/header&gt;</pre>
+    <div class="exercises">
+      <div class="ex"><div class="n">1</div><p><code>.sok { flex: 1; }</code>. Fältet tar ledig yta mellan logotyp och knapp.</p></div>
+      <div class="ex"><div class="n">2</div><p><code>.logo, button { flex: 0 0 auto; }</code>. De blir så breda som innehållet och vägrar krympa.</p></div>
+      <div class="ex"><div class="n">3</div><p>Gör fönstret smalt. Fältet ger sig. Logotyp och knapp behåller sin bredd.</p></div>
+    </div>
+    <div class="note safe"><div class="tag">Kontroll</div><p>En rad: Studio, ett fält som fyller mitten, och en knapp så bred som ordet Sök.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Övning · kort</div>
+    <h2>Bild, text och pris på en rad</h2>
+    <pre>&lt;article class="kort"&gt;
+  &lt;div class="bild"&gt;Bild&lt;/div&gt;
+  &lt;div class="text"&gt;&lt;h2&gt;Stol&lt;/h2&gt;&lt;p&gt;Ek, 120 cm.&lt;/p&gt;&lt;/div&gt;
+  &lt;span class="pris"&gt;1 200 kr&lt;/span&gt;
+&lt;/article&gt;</pre>
+    <div class="exercises">
+      <div class="ex"><div class="n">1</div><p><code>.kort { display: flex; gap: 1rem; align-items: center; }</code>. Ge <code>.bild</code> en bakgrund så rutan syns.</p></div>
+      <div class="ex"><div class="n">2</div><p><code>.bild { flex: 0 0 6rem; }</code> och <code>.text { flex: 1; }</code>. Bilden är låst. Texten tar resten.</p></div>
+      <div class="ex"><div class="n">3</div><p><code>.pris { align-self: flex-start; }</code>. Priset sitter uppe i hörnet. Texten är kvar i mitten.</p></div>
+    </div>
+    <div class="note safe"><div class="tag">Kontroll</div><p>Bilden ändrar inte bredd när du drar i fönstret. Texten gör det. Priset ligger högre än texten.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Lektion 9 · Avslut</div>
+    <h1>Klar när…</h1>
+    <ul class="steps">
+      <li><span class="n">✓</span><span>Du kan förklara <code>flex-basis</code>, <code>flex-grow</code> och <code>flex-shrink</code> med vardagsord.</span></li>
+      <li><span class="n">✓</span><span>Du kan skriva <code>flex: 1</code> för att dela lika, och <code>flex: 0 0 12rem</code> för en fast bredd.</span></li>
+      <li><span class="n">✓</span><span>Du vet att bara <code>flex-grow: 1</code> inte är samma sak som <code>flex: 1</code>.</span></li>
+      <li><span class="n">✓</span><span>Du kan lyfta ut ett barn med <code>align-self</code>.</span></li>
+    </ul>
+    <div class="note"><div class="tag">Nästa lektion</div><p>CSS Grid. Då ritar vi rader och kolumner på samma gång, med ett nytt galler.</p></div>
+  </div></section>
+
+</main><div class="nav"><span class="hint">← → navigera · mellanslag går framåt</span><span class="counter"><span id="cur">1</span> / <span id="total">1</span></span></div><script src="lektioner.js"></script></body>
+</html>
