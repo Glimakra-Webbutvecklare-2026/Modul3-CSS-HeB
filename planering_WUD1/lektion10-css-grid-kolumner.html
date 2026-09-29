@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="sv">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Lektion 10 · CSS Grid – kolumner, rader och placering</title>
+<link rel="stylesheet" href="lektioner.css">
+<style>
+  .cells, .fr, .rows, .placed {
+    display: grid;
+    gap: .45rem;
+    margin-top: .7rem;
+  }
+  .cells div, .fr div, .rows div, .placed div, .line-cells div {
+    padding: .65rem .4rem;
+    border: 2px solid #388e3c;
+    background: #e8f5e9;
+    font-weight: 700;
+    text-align: center;
+  }
+  .cells { grid-template-columns: repeat(3, 1fr); }
+  .fr { grid-template-columns: 2fr 1fr 1fr; }
+  .fr div:first-child { background: #fff3bf; border-color: #f9a825; }
+  .rows { grid-template-columns: 1fr 1fr; grid-template-rows: 4.2rem 4.2rem; }
+  .line-nums {
+    display: flex;
+    justify-content: space-between;
+    margin-top: .9rem;
+    color: var(--muted);
+    font-size: .78rem;
+    font-weight: 800;
+  }
+  .line-cells { display: grid; grid-template-columns: repeat(3, 1fr); }
+  .placed { grid-template-columns: repeat(3, 1fr); grid-template-rows: 4rem 4rem; }
+  .placed .hit { grid-column: 3; grid-row: 1; background: #fff3bf; border-color: #f9a825; }
+  .exercise pre { margin-top: .7rem; }
+  .exercise .exercises .ex { padding: .45rem 0; }
+  .exercise .note { margin-top: .7rem; }
+</style>
+</head>
+<body><div class="bar"></div><main class="deck">
+
+  <section class="slide active"><div class="slide-inner">
+    <div class="kicker">Vecka 40 · Lektion 10 · HeB</div>
+    <h1>CSS Grid – spåren</h1>
+    <p class="lead">I tisdags ordnade flex en rad eller en kolumn. Idag ritar vi båda på en gång: kolumner, rader och vilken cell ett barn hamnar i.</p>
+    <p class="muted">Mål: kunna bygga ett enkelt galler med <code>fr</code> och <code>gap</code>, och flytta ett barn till en bestämd cell.</p>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Från flex till grid</div>
+    <h2>Två riktningar</h2>
+    <div class="grid">
+      <div class="card"><h3>Flex</h3><p>Du ställer barnen på rad och säger hur de ska växa.</p><small>Nav, knappar, ett korts insida.</small></div>
+      <div class="card"><h3>Grid</h3><p>Du ritar spåren först. Barnen faller ner i cellerna.</p><small>Sidmall, galleri, formulär.</small></div>
+    </div>
+    <div class="note"><div class="tag">Idag</div><p>Kolumner, rader, <code>fr</code>, <code>gap</code> och hur du pekar ut en cell. Att ett barn tar flera celler kommer imorgon.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">display: grid</div>
+    <h2>Barnen fyller celler i ordning</h2>
+    <pre>.gallery {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+}</pre>
+    <div class="cells"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div></div>
+    <p class="muted">Sex barn och tre kolumner ger två rader, utan att du ritat raderna. Det kallas implicita rader. HTML-ordningen är fortfarande läsordningen.</p>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">grid-template-columns</div>
+    <h2>Så många spår du räknar upp</h2>
+    <pre>grid-template-columns: 12rem 1fr 12rem;
+grid-template-columns: repeat(3, 1fr);   <span class="c">/* samma som 1fr 1fr 1fr */</span></pre>
+    <div class="note"><div class="tag">Ett spår, en kolumn</div><p>Varje värde är ett spår. Tre värden, tre kolumner. <code>repeat</code> är bara ett kortare sätt att skriva samma sak – det behövs på riktigt imorgon, när antalet kolumner ska bero på fönstret.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">fr</div>
+    <h2>Dela på det som blir över</h2>
+    <pre>grid-template-columns: 2fr 1fr 1fr;</pre>
+    <div class="fr"><div>2fr</div><div>1fr</div><div>1fr</div></div>
+    <p class="muted"><code>fr</code> är en andel av det lediga utrymmet i gallret. <code>2fr 1fr 1fr</code> betyder hälften, en fjärdedel, en fjärdedel. Pixlar och <code>rem</code> tar sin plats först. <code>fr</code> delar resten.</p>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Rader och gap</div>
+    <h2>Samma lucka som i flex</h2>
+    <pre>.tiles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 4.2rem 4.2rem;
+  gap: 1rem;                 <span class="c">/* rad | kolumn om du ger två värden */</span>
+}</pre>
+    <div class="rows"><div>1</div><div>2</div><div>3</div><div>4</div></div>
+    <div class="note"><div class="tag">När du behöver rader</div><p>Hoppa över <code>grid-template-rows</code> när innehållet får styra höjden, som i ett kortgaller. Sätt radhöjd när cellerna ska vara lika höga oavsett text.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Linjerna</div>
+    <h2>Numren sitter mellan kolumnerna</h2>
+    <div class="line-nums"><span>1</span><span>2</span><span>3</span><span>4</span></div>
+    <div class="line-cells"><div>kolumn 1</div><div>kolumn 2</div><div>kolumn 3</div></div>
+    <p class="lead">Tre kolumner har fyra linjer. Kolumn 1 ligger mellan linje 1 och 2. Kolumn 3 börjar på linje 3.</p>
+    <div class="note"><div class="tag">Imorgon</div><p><code>grid-column: 1 / 3</code> betyder från linje 1 till linje 3. Idag räcker det att peka ut en cell.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Placera</div>
+    <h2>Peka ut en cell</h2>
+    <pre>.featured {
+  grid-column: 3;    <span class="c">/* börja på linje 3 → kolumn 3 */</span>
+  grid-row: 1;       <span class="c">/* börja på linje 1 → rad 1 */</span>
+}</pre>
+    <div class="placed"><div class="hit">1</div><div>2</div><div>3</div><div>4</div></div>
+    <p class="muted">1 står först i HTML, men hamnar i övre högra cellen. 2, 3 och 4 fyller lediga celler i ordning – därför läser första raden 2, 3, 1.</p>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Förutsäg · en cell</div>
+    <h2>Logotypen i övre högra hörnet</h2>
+    <p class="lead">Galleriet har tre kolumner. Logotypen ska ligga på första raden, i tredje kolumnen. Vilka två egenskaper?</p>
+    <button class="reveal">Visa svar</button>
+    <div class="answer">
+      <pre style="margin-top:.4rem;">.logo {
+  grid-column: 3;
+  grid-row: 1;
+}</pre>
+      <p>3 är linjen där kolumn 3 börjar, inte ”tre kolumner bred”. Bredd över flera celler är morgondagens <code>span</code>.</p>
+    </div>
+  </div></section>
+
+  <section class="slide exercise"><div class="slide-inner">
+    <div class="kicker">Övning · sex kort</div>
+    <h2>Ett nytt galler</h2>
+    <pre>&lt;div class="gallery"&gt;
+  &lt;div class="card"&gt;1&lt;/div&gt;
+  &lt;!-- …kort 2 till 6, samma element --&gt;
+&lt;/div&gt;</pre>
+    <div class="exercises">
+      <div class="ex"><div class="n">1</div><p>Klistra in HTML:en. <code>.gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }</code> och en kant på <code>.card</code>.</p></div>
+      <div class="ex"><div class="n">2</div><p>Ändra kolumnerna till <code>2fr 1fr 1fr</code>. Första kolumnen blir dubbelt så bred.</p></div>
+      <div class="ex"><div class="n">3</div><p>Lägg till <code>grid-template-rows: 8rem 8rem;</code>. De två första raderna får fast höjd. Ett sjunde kort skulle hamna på en ny, implicit rad.</p></div>
+      <div class="ex"><div class="n">4</div><p>Första kortet: <code>grid-column: 3; grid-row: 1;</code>. Det hoppar till övre högra cellen. De andra fyller på i ordning.</p></div>
+    </div>
+    <div class="note safe"><div class="tag">Spara filen</div><p>Imorgon får ett kort ta flera celler, och samma galler läggs in i en sida.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Lektion 10 · Avslut</div>
+    <h1>Klar när…</h1>
+    <ul class="steps">
+      <li><span class="n">✓</span><span>Du kan göra ett element till ett grid och låta barnen fylla cellerna i ordning.</span></li>
+      <li><span class="n">✓</span><span>Du kan skriva kolumner med <code>fr</code> och <code>repeat</code>, och luckor med <code>gap</code>.</span></li>
+      <li><span class="n">✓</span><span>Du vet att rader du inte ritat ändå skapas när barnen tar slut på plats.</span></li>
+      <li><span class="n">✓</span><span>Du kan flytta ett barn med <code>grid-column</code> och <code>grid-row</code>, och att siffran är en linje.</span></li>
+    </ul>
+    <div class="note"><div class="tag">Nästa lektion</div><p>Spanning, namngivna områden och ett galler som ändrar antal kolumner av sig själv. Sedan väljer vi flex eller grid med flit.</p></div>
+  </div></section>
+
+</main><div class="nav"><span class="hint">← → navigera · mellanslag går framåt</span><span class="counter"><span id="cur">1</span> / <span id="total">1</span></span></div><script src="lektioner.js"></script></body>
+</html>

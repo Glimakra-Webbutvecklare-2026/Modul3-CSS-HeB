@@ -75,7 +75,7 @@
   <section class="slide"><div class="slide-inner">
     <div class="kicker">flex-grow</div>
     <h2>Dela på ytan som blir över</h2>
-    <pre>.kort { flex-grow: 1; flex-basis: 0; }
+    <pre>.card { flex-grow: 1; flex-basis: 0; }
 .middle { flex-grow: 2; }</pre>
     <div class="row grow"><span>1</span><span class="double">2</span><span>1</span></div>
     <div class="note"><div class="tag">basis 0</div><p>Med <code>flex-basis: 0</code> räknas inte textens bredd in först. Då blir bredden verkligen 1 mot 2 mot 1. Sätter du bara <code>flex-grow: 1</code> är basis fortfarande <code>auto</code>, och innehållet påverkar.</p></div>
@@ -84,7 +84,7 @@
   <section class="slide"><div class="slide-inner">
     <div class="kicker">flex-shrink</div>
     <h2>När raden är för smal</h2>
-    <pre>.kort { flex: 1 1 8rem; }
+    <pre>.card { flex: 1 1 8rem; }
 .fixed { flex-shrink: 0; }   <span class="c">/* den här vägrar krympa */</span></pre>
     <div class="row tight"><span>krymper</span><span class="fixed">fast 8rem</span><span>krymper</span></div>
     <p class="muted">Rutan är 18rem och varje barn vill ha 8rem. De som får krympa ger sig. Den röda behåller sin bredd – då får de andra ta smällen.</p>
@@ -97,7 +97,7 @@
 flex: 2;          <span class="c">/* dubbelt så stor del */</span>
 flex: 0 0 12rem;  <span class="c">/* väx inte, krymp inte, 12rem */</span>
 flex: 0 0 auto;   <span class="c">/* så bred som innehållet */</span></pre>
-    <div class="row verktyg"><span class="search">Sökfält · flex: 1</span><span class="button">Sök</span></div>
+    <div class="row toolbar"><span class="search">Sökfält · flex: 1</span><span class="button">Sök</span></div>
     <div class="note"><div class="tag">Lika kort</div><p>Skriv <code>flex: 1</code>, inte bara <code>flex-grow: 1</code>, när korten ska dela raden lika. Basis 0 gör att textlängden inte snedvrider dem.</p></div>
   </div></section>
 
@@ -142,13 +142,13 @@ flex: 0 0 auto;   <span class="c">/* så bred som innehållet */</span></pre>
   <section class="slide"><div class="slide-inner">
     <div class="kicker">Övning · kort</div>
     <h2>Bild, text och pris på en rad</h2>
-    <pre>&lt;article class="kort"&gt;
+    <pre>&lt;article class="card"&gt;
   &lt;div class="image"&gt;Bild&lt;/div&gt;
   &lt;div class="text"&gt;&lt;h2&gt;Stol&lt;/h2&gt;&lt;p&gt;Ek, 120 cm.&lt;/p&gt;&lt;/div&gt;
-  &lt;span class="pris"&gt;1 200 kr&lt;/span&gt;
+  &lt;span class="price"&gt;1 200 kr&lt;/span&gt;
 &lt;/article&gt;</pre>
     <div class="exercises">
-      <div class="ex"><div class="n">1</div><p><code>.kort { display: flex; gap: 1rem; align-items: center; }</code>. Ge <code>.image</code> en bakgrund så rutan syns.</p></div>
+      <div class="ex"><div class="n">1</div><p><code>.card { display: flex; gap: 1rem; align-items: center; }</code>. Ge <code>.image</code> en bakgrund så rutan syns.</p></div>
       <div class="ex"><div class="n">2</div><p><code>.image { flex: 0 0 6rem; }</code> och <code>.text { flex: 1; }</code>. Bilden är låst. Texten tar resten.</p></div>
       <div class="ex"><div class="n">3</div><p><code>.price { align-self: flex-start; }</code>. Priset sitter uppe i hörnet. Texten är kvar i mitten.</p></div>
     </div>

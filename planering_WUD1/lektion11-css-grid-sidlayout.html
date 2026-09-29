@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="sv">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Lektion 11 · CSS Grid – spanning, areas och responsivt</title>
+<link rel="stylesheet" href="lektioner.css">
+<style>
+  .span-demo, .auto-demo {
+    display: grid;
+    gap: .45rem;
+    margin-top: .8rem;
+  }
+  .span-demo div, .auto-demo div, .page > div {
+    padding: .6rem .5rem;
+    font-weight: 700;
+  }
+  .span-demo { grid-template-columns: repeat(3, 1fr); }
+  .span-demo div { border: 2px solid #388e3c; background: #e8f5e9; text-align: center; }
+  .span-demo .wide { grid-column: span 2; border-color: #f9a825; background: #fff3bf; }
+  .page {
+    display: grid;
+    grid-template-columns: 8rem 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "header header"
+      "sidebar main"
+      "footer footer";
+    gap: .4rem;
+    min-height: 11rem;
+    margin-top: .6rem;
+  }
+  .page .header { grid-area: header; border: 2px solid #1976d2; background: #e3f2fd; }
+  .page .sidebar { grid-area: sidebar; border: 2px solid #f9a825; background: #fff3bf; }
+  .page .main { grid-area: main; border: 2px solid #388e3c; background: #e8f5e9; }
+  .page .footer { grid-area: footer; border: 2px solid #555; background: #f5f5f5; }
+  .auto-box {
+    width: 28rem;
+    max-width: 100%;
+    min-width: 12rem;
+    margin-top: .8rem;
+    padding: .5rem;
+    resize: horizontal;
+    overflow: auto;
+    border: 2px dashed #555;
+    background: #f5f5f5;
+  }
+  .auto-demo { grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr)); margin-top: 0; }
+  .auto-demo div { border: 2px solid #388e3c; background: #e8f5e9; text-align: center; }
+  .exercise pre { margin-top: .7rem; }
+  .exercise .exercises .ex { padding: .5rem 0; }
+  .exercise .note { margin-top: .8rem; }
+</style>
+</head>
+<body><div class="bar"></div><main class="deck">
+
+  <section class="slide active"><div class="slide-inner">
+    <div class="kicker">Vecka 40 · Lektion 11 · HeB</div>
+    <h1>Sidan med grid</h1>
+    <p class="lead">Igår fick varje barn en cell. Idag får ett barn ta flera celler, områdena får namn, och kolumnerna anpassar sig till fönstret.</p>
+    <p class="muted">Mål: kunna bygga sidhuvud, sidomeny, innehåll och sidfot med <code>grid-template-areas</code>, och ett galler med <code>auto-fit</code> och <code>minmax</code>.</p>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">span</div>
+    <h2>Ett barn, flera celler</h2>
+    <pre>.wide { grid-column: span 2; }
+<span class="c">/* samma sak, med linjerna från igår: grid-column: 1 / 3; */</span></pre>
+    <div class="span-demo"><div class="wide">span 2</div><div>B</div><div>C</div><div>D</div></div>
+    <p class="muted"><code>span 2</code> betyder två kolumner från där barnet står. <code>1 / 3</code> betyder från linje 1 till linje 3. <code>span</code> är den du skriver till vardags. <code>grid-row: span 2</code> gör samma sak i höjdled.</p>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">grid-template-areas</div>
+    <h2>Rita sidan som en karta</h2>
+    <pre>.page {
+  display: grid;
+  grid-template-columns: 8rem 1fr;
+  grid-template-areas:
+    "header header"
+    "sidebar main"
+    "footer footer";
+}</pre>
+    <div class="page">
+      <div class="header">header</div>
+      <div class="sidebar">sidebar</div>
+      <div class="main">main</div>
+      <div class="footer">footer</div>
+    </div>
+    <p class="muted">Varje sträng är en rad. Varje ord är en cell. Samma namn i två celler betyder att området spänner över båda. En punkt <code>.</code> är en tom cell.</p>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">grid-area</div>
+    <h2>Sätt namnet på barnet</h2>
+    <pre>.header  { grid-area: header; }
+.sidebar { grid-area: sidebar; }
+.main    { grid-area: main; }
+.footer  { grid-area: footer; }</pre>
+    <div class="note warning"><div class="tag">Namnen måste matcha</div><p>Kartan och <code>grid-area</code> ska stava likadant. Antalet ord på varje rad i kartan ska vara lika många som du har kolumner. Header och footer spänner över två kolumner för att ordet står två gånger – det är <code>span</code>, skrivet som en karta.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">auto-fit och minmax</div>
+    <h2>Så många kolumner som får plats</h2>
+    <pre>grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));</pre>
+    <div class="auto-box"><div class="auto-demo"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div></div></div>
+    <ul class="steps">
+      <li><span class="n">1</span><span><code>minmax(12rem, 1fr)</code> – aldrig smalare än 12rem, dela resten lika.</span></li>
+      <li><span class="n">2</span><span><code>auto-fit</code> – så många sådana kolumner som får plats på raden.</span></li>
+      <li><span class="n">3</span><span>Dra i rutans nedre högra hörn. Färre kolumner när den blir smal, fler när den blir bred.</span></li>
+    </ul>
+    <p class="muted"><code>auto-fill</code> lämnar tomma spår kvar. <code>auto-fit</code> slår ihop dem. För ett galleri: <code>auto-fit</code>.</p>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Förutsäg · galleriet</div>
+    <h2>Kolumner som följer fönstret</h2>
+    <p class="lead">Inga kort smalare än 12rem. Så många kolumner som får plats. De delar på resten av bredden. Vilken deklaration?</p>
+    <button class="reveal">Visa svar</button>
+    <div class="answer">
+      <pre style="margin-top:.4rem;">grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));</pre>
+      <p><code>12rem</code> är golvet. <code>1fr</code> är taket: ta lika del av det som blir över. <code>auto-fit</code> räknar ut hur många som ryms.</p>
+    </div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Veckan · välj</div>
+    <h2>Layout: flex vs grid</h2>
+    <table class="table">
+      <tr><th>Du bygger</th><th>Välj</th></tr>
+      <tr><td>Nav, knapprad, centrera en ruta</td><td><code>flex</code></td></tr>
+      <tr><td>Sidhuvud, meny, innehåll, sidfot</td><td><code>grid</code> och <code>areas</code></td></tr>
+      <tr><td>Bild och text inuti ett kort</td><td><code>flex</code></td></tr>
+      <tr><td>Gallerikort som byter antal kolumner</td><td><code>grid</code> och <code>auto-fit</code></td></tr>
+    </table>
+    <div class="note"><div class="tag">Tillsammans</div><p>Grid ritar sidan. Flex ordnar det som ligger inuti en ruta. Börja med sidan, gå sedan in i rutorna.</p></div>
+  </div></section>
+
+  <section class="slide exercise"><div class="slide-inner">
+    <div class="kicker">Övning · samma kort</div>
+    <h2>Galleriet får en sida runt sig</h2>
+    <pre>&lt;div class="page"&gt;
+  &lt;header class="header"&gt;…&lt;/header&gt;
+  &lt;aside class="sidebar"&gt;Meny&lt;/aside&gt;
+  &lt;main class="main"&gt;…korten…&lt;/main&gt;
+  &lt;footer class="footer"&gt;Fot&lt;/footer&gt;
+&lt;/div&gt;</pre>
+    <div class="exercises">
+      <div class="ex"><div class="n">1</div><p><code>.page</code> med kolumner <code>8rem 1fr</code> och kartan ovan. <code>grid-area</code> på header, sidebar, main och footer.</p></div>
+      <div class="ex"><div class="n">2</div><p>Header och footer ska gå över båda kolumnerna. Samma namn två gånger på den raden.</p></div>
+      <div class="ex"><div class="n">3</div><p>Lägg <code>.gallery</code> i <code>main</code>. Kolumner: <code>repeat(auto-fit, minmax(12rem, 1fr))</code>. Ta bort den fasta radhöjden.</p></div>
+      <div class="ex"><div class="n">4</div><p>Headern: logotyp och länk med <code>display: flex; justify-content: space-between;</code>. Sidan är grid, headern är flex.</p></div>
+    </div>
+    <div class="note safe"><div class="tag">Kontroll</div><p>Fyra områden. Korten byter antal kolumner när fönstret ändras. Logotyp och länk i varsin ände.</p></div>
+  </div></section>
+
+  <section class="slide"><div class="slide-inner">
+    <div class="kicker">Lektion 11 · Avslut</div>
+    <h1>Klar när…</h1>
+    <ul class="steps">
+      <li><span class="n">✓</span><span>Du kan låta ett barn ta flera celler med <code>span</code>.</span></li>
+      <li><span class="n">✓</span><span>Du kan rita en sida med <code>grid-template-areas</code> och koppla barnen med <code>grid-area</code>.</span></li>
+      <li><span class="n">✓</span><span>Du kan skriva ett galler som anpassar antalet kolumner med <code>auto-fit</code> och <code>minmax</code>.</span></li>
+      <li><span class="n">✓</span><span>Du kan välja flex för en rad inuti en ruta, och grid för själva sidan.</span></li>
+    </ul>
+    <div class="note"><div class="tag">Veckan</div><p>Tisdag: flex-behållaren och flex-barnen. Onsdag: spåren. Torsdag: sidan. Grid ritar. Flex fyller i.</p></div>
+  </div></section>
+
+</main><div class="nav"><span class="hint">← → navigera · mellanslag går framåt</span><span class="counter"><span id="cur">1</span> / <span id="total">1</span></span></div><script src="lektioner.js"></script></body>
+</html>
