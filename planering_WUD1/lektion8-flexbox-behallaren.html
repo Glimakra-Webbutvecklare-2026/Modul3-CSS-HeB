@@ -60,7 +60,7 @@
   <section class="slide"><div class="slide-inner">
     <div class="kicker">display: flex</div>
     <h2>Barnen lägger sig på rad</h2>
-    <pre>.rad { display: flex; }</pre>
+    <pre>.row { display: flex; }</pre>
     <div class="fx-label">Utan flex · block</div>
     <div class="fx-col" style="display:block;max-width:16rem"><span style="display:block;margin-top:.35rem">Ett</span><span style="display:block;margin-top:.35rem">Två</span><span style="display:block;margin-top:.35rem">Tre</span></div>
     <div class="fx-label">Med display: flex</div>
@@ -81,7 +81,7 @@
         <div class="fx-col"><span>Hem</span><span>Om</span><span>Kontakt</span></div>
       </div>
     </div>
-    <pre>.meny { flex-direction: column; }</pre>
+    <pre>.menu { flex-direction: column; }</pre>
     <div class="note"><div class="tag">row-reverse</div><p><code>row-reverse</code> och <code>column-reverse</code> finns, men de vänder bara ordningen visuellt. Låt HTML-ordningen vara läsordningen.</p></div>
   </div></section>
 
@@ -135,7 +135,7 @@
   <section class="slide"><div class="slide-inner">
     <div class="kicker">Förutsäg · axeln</div>
     <h2>Knapparna ska isär, uppifrån och ner</h2>
-    <pre>.knappkolumn {
+    <pre>.button-column {
   display: flex;
   flex-direction: column;
   min-height: 16rem;
@@ -161,7 +161,7 @@
         <div class="al"><span>Kort</span><span class="tall">Högre</span><span>Kort</span></div>
       </div>
     </div>
-    <pre>.rad { align-items: center; }   <span class="c">/* också: flex-start, flex-end, stretch */</span></pre>
+    <pre>.row { align-items: center; }   <span class="c">/* också: flex-start, flex-end, stretch */</span></pre>
     <p class="muted">Centrera ett enda barn både vågrätt och lodrätt: <code>justify-content: center</code> och <code>align-items: center</code> på samma behållare.</p>
   </div></section>
 
@@ -172,7 +172,7 @@
     <div class="gap-row mellan"><span>Ett</span><span>Två</span><span>Tre</span></div>
     <div class="fx-label">gap på behållaren</div>
     <div class="gap-row lucka"><span>Ett</span><span>Två</span><span>Tre</span></div>
-    <pre>.rad { display: flex; gap: 1rem; }
+    <pre>.row { display: flex; gap: 1rem; }
 <span class="c">/* gap: 1rem 2rem;  →  rad | kolumn */</span></pre>
     <div class="note"><div class="tag">Varför gap</div><p><code>margin</code> på barnen ger också luft utanför sista barnet. <code>gap</code> ligger bara mellan dem. Samma egenskap kommer tillbaka i Grid.</p></div>
   </div></section>
@@ -192,7 +192,7 @@
   <section class="slide"><div class="slide-inner">
     <div class="kicker">flex-wrap</div>
     <h2>När raden tar slut</h2>
-    <pre>.rad {
+    <pre>.row {
   display: flex;
   flex-wrap: wrap;
   gap: .5rem;
@@ -215,16 +215,16 @@
   <section class="slide"><div class="slide-inner">
     <div class="kicker">Övning · samma rad</div>
     <h2>Tre kort, ett steg i taget</h2>
-    <pre>&lt;div class="rad"&gt;
-  &lt;div class="kort"&gt;Ett&lt;/div&gt;
-  &lt;div class="kort"&gt;Två&lt;/div&gt;
-  &lt;div class="kort"&gt;Tre&lt;/div&gt;
+    <pre>&lt;div class="row"&gt;
+  &lt;div class="card"&gt;Ett&lt;/div&gt;
+  &lt;div class="card"&gt;Två&lt;/div&gt;
+  &lt;div class="card"&gt;Tre&lt;/div&gt;
 &lt;/div&gt;</pre>
     <div class="exercises">
-      <div class="ex"><div class="n">1</div><p><code>.rad { display: flex; gap: 1rem; }</code> och en kant på <code>.kort</code>. De ska ligga på en rad.</p></div>
+      <div class="ex"><div class="n">1</div><p><code>.row { display: flex; gap: 1rem; }</code> och en kant på <code>.card</code>. De ska ligga på en rad.</p></div>
       <div class="ex"><div class="n">2</div><p>Lägg till <code>justify-content: space-between;</code>. Första och sista kortet går åt varsitt håll.</p></div>
       <div class="ex"><div class="n">3</div><p>Lägg till <code>min-height: 10rem;</code> och <code>align-items: center;</code>. Korten hamnar i mitten på höjden.</p></div>
-      <div class="ex"><div class="n">4</div><p>Lägg till <code>flex-wrap: wrap;</code> och <code>min-width: 10rem;</code> på <code>.kort</code>. Gör fönstret smalt. Korten byter rad.</p></div>
+      <div class="ex"><div class="n">4</div><p>Lägg till <code>flex-wrap: wrap;</code> och <code>min-width: 10rem;</code> på <code>.card</code>. Gör fönstret smalt. Korten byter rad.</p></div>
     </div>
     <div class="note safe"><div class="tag">Spara filen</div><p>Samma tre kort används igen i nästa lektion, när barnen får bestämma bredden.</p></div>
   </div></section>

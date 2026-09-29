@@ -12,7 +12,7 @@
     border: 2px dashed #555;
     background: #f5f5f5;
   }
-  .row span, .sok, .knapp {
+  .row span, .search, .button {
     padding: .55rem .8rem;
     border: 2px solid #1976d2;
     background: #e3f2fd;
@@ -21,13 +21,13 @@
   }
   .basis span:first-child { flex-basis: 40%; background: #fff3bf; border-color: #f9a825; }
   .grow span { flex-grow: 1; flex-basis: 0; }
-  .grow .dubbel { flex-grow: 2; background: #fff3bf; border-color: #f9a825; }
+  .grow .double { flex-grow: 2; background: #fff3bf; border-color: #f9a825; }
   .tight { width: 18rem; max-width: 100%; overflow: auto; }
   .tight span { flex: 1 1 8rem; }
-  .tight .fast { flex-shrink: 0; background: #ffebee; border-color: #c62828; }
-  .verktyg { align-items: center; }
-  .sok { flex: 1; }
-  .knapp { flex: 0 0 auto; }
+  .tight .fixed { flex-shrink: 0; background: #ffebee; border-color: #c62828; }
+  .toolbar { align-items: center; }
+  .search { flex: 1; }
+  .button { flex: 0 0 auto; }
   .self { align-items: center; height: 8rem; }
   .self .end { align-self: flex-end; background: #fff3bf; border-color: #f9a825; }
 </style>
@@ -67,7 +67,7 @@
   <section class="slide"><div class="slide-inner">
     <div class="kicker">flex-basis</div>
     <h2>Startbredden</h2>
-    <pre>.första { flex-basis: 40%; }   <span class="c">/* de andra: auto */</span></pre>
+    <pre>.first { flex-basis: 40%; }   <span class="c">/* de andra: auto */</span></pre>
     <div class="row basis"><span>40 %</span><span>auto</span><span>auto</span></div>
     <p class="muted"><code>auto</code> betyder ungefär: så brett som innehållet, eller som <code>width</code> om du satt en. <code>flex-basis</code> vinner över <code>width</code> när båda finns.</p>
   </div></section>
@@ -76,8 +76,8 @@
     <div class="kicker">flex-grow</div>
     <h2>Dela på ytan som blir över</h2>
     <pre>.kort { flex-grow: 1; flex-basis: 0; }
-.mitt { flex-grow: 2; }</pre>
-    <div class="row grow"><span>1</span><span class="dubbel">2</span><span>1</span></div>
+.middle { flex-grow: 2; }</pre>
+    <div class="row grow"><span>1</span><span class="double">2</span><span>1</span></div>
     <div class="note"><div class="tag">basis 0</div><p>Med <code>flex-basis: 0</code> räknas inte textens bredd in först. Då blir bredden verkligen 1 mot 2 mot 1. Sätter du bara <code>flex-grow: 1</code> är basis fortfarande <code>auto</code>, och innehållet påverkar.</p></div>
   </div></section>
 
@@ -85,8 +85,8 @@
     <div class="kicker">flex-shrink</div>
     <h2>När raden är för smal</h2>
     <pre>.kort { flex: 1 1 8rem; }
-.fast { flex-shrink: 0; }   <span class="c">/* den här vägrar krympa */</span></pre>
-    <div class="row tight"><span>krymper</span><span class="fast">fast 8rem</span><span>krymper</span></div>
+.fixed { flex-shrink: 0; }   <span class="c">/* den här vägrar krympa */</span></pre>
+    <div class="row tight"><span>krymper</span><span class="fixed">fast 8rem</span><span>krymper</span></div>
     <p class="muted">Rutan är 18rem och varje barn vill ha 8rem. De som får krympa ger sig. Den röda behåller sin bredd – då får de andra ta smällen.</p>
   </div></section>
 
@@ -97,7 +97,7 @@
 flex: 2;          <span class="c">/* dubbelt så stor del */</span>
 flex: 0 0 12rem;  <span class="c">/* väx inte, krymp inte, 12rem */</span>
 flex: 0 0 auto;   <span class="c">/* så bred som innehållet */</span></pre>
-    <div class="row verktyg"><span class="sok">Sökfält · flex: 1</span><span class="knapp">Sök</span></div>
+    <div class="row verktyg"><span class="search">Sökfält · flex: 1</span><span class="button">Sök</span></div>
     <div class="note"><div class="tag">Lika kort</div><p>Skriv <code>flex: 1</code>, inte bara <code>flex-grow: 1</code>, när korten ska dela raden lika. Basis 0 gör att textlängden inte snedvrider dem.</p></div>
   </div></section>
 
@@ -107,8 +107,8 @@ flex: 0 0 auto;   <span class="c">/* så bred som innehållet */</span></pre>
     <p class="lead">Ett sökfält ska fylla det som blir över på raden. Knappen ska vara så bred som ordet ”Sök” och inte krympa. Vilka två <code>flex</code>-värden?</p>
     <button class="reveal">Visa svar</button>
     <div class="answer">
-      <pre style="margin-top:.4rem;">.sok   { flex: 1; }
-.knapp { flex: 0 0 auto; }</pre>
+      <pre style="margin-top:.4rem;">.search   { flex: 1; }
+.button { flex: 0 0 auto; }</pre>
       <p><code>flex: 1</code> delar på ledig yta. <code>0 0 auto</code> låser knappen vid innehållets bredd.</p>
     </div>
   </div></section>
@@ -116,8 +116,8 @@ flex: 0 0 auto;   <span class="c">/* så bred som innehållet */</span></pre>
   <section class="slide"><div class="slide-inner">
     <div class="kicker">align-self</div>
     <h2>Ett barn som bryter mönstret</h2>
-    <pre>.rad  { align-items: center; }
-.sista { align-self: flex-end; }</pre>
+    <pre>.row  { align-items: center; }
+.last { align-self: flex-end; }</pre>
     <div class="row self"><span>center</span><span>center</span><span class="end">flex-end</span></div>
     <p class="muted"><code>align-items</code> gäller alla barn. <code>align-self</code> skriver över det för ett enda. Samma värden: <code>flex-start</code>, <code>center</code>, <code>flex-end</code>, <code>stretch</code>.</p>
   </div></section>
@@ -128,11 +128,11 @@ flex: 0 0 auto;   <span class="c">/* så bred som innehållet */</span></pre>
     <p class="lead">Behåll CSS:en från lektion 8. Byt innehållet i <code>.navbar</code> mot det här.</p>
     <pre>&lt;header class="navbar"&gt;
   &lt;a class="logo" href="#"&gt;Studio&lt;/a&gt;
-  &lt;input class="sok" type="search" placeholder="Sök"&gt;
+  &lt;input class="search" type="search" placeholder="Sök"&gt;
   &lt;button&gt;Sök&lt;/button&gt;
 &lt;/header&gt;</pre>
     <div class="exercises">
-      <div class="ex"><div class="n">1</div><p><code>.sok { flex: 1; }</code>. Fältet tar ledig yta mellan logotyp och knapp.</p></div>
+      <div class="ex"><div class="n">1</div><p><code>.search { flex: 1; }</code>. Fältet tar ledig yta mellan logotyp och knapp.</p></div>
       <div class="ex"><div class="n">2</div><p><code>.logo, button { flex: 0 0 auto; }</code>. De blir så breda som innehållet och vägrar krympa.</p></div>
       <div class="ex"><div class="n">3</div><p>Gör fönstret smalt. Fältet ger sig. Logotyp och knapp behåller sin bredd.</p></div>
     </div>
@@ -143,14 +143,14 @@ flex: 0 0 auto;   <span class="c">/* så bred som innehållet */</span></pre>
     <div class="kicker">Övning · kort</div>
     <h2>Bild, text och pris på en rad</h2>
     <pre>&lt;article class="kort"&gt;
-  &lt;div class="bild"&gt;Bild&lt;/div&gt;
+  &lt;div class="image"&gt;Bild&lt;/div&gt;
   &lt;div class="text"&gt;&lt;h2&gt;Stol&lt;/h2&gt;&lt;p&gt;Ek, 120 cm.&lt;/p&gt;&lt;/div&gt;
   &lt;span class="pris"&gt;1 200 kr&lt;/span&gt;
 &lt;/article&gt;</pre>
     <div class="exercises">
-      <div class="ex"><div class="n">1</div><p><code>.kort { display: flex; gap: 1rem; align-items: center; }</code>. Ge <code>.bild</code> en bakgrund så rutan syns.</p></div>
-      <div class="ex"><div class="n">2</div><p><code>.bild { flex: 0 0 6rem; }</code> och <code>.text { flex: 1; }</code>. Bilden är låst. Texten tar resten.</p></div>
-      <div class="ex"><div class="n">3</div><p><code>.pris { align-self: flex-start; }</code>. Priset sitter uppe i hörnet. Texten är kvar i mitten.</p></div>
+      <div class="ex"><div class="n">1</div><p><code>.kort { display: flex; gap: 1rem; align-items: center; }</code>. Ge <code>.image</code> en bakgrund så rutan syns.</p></div>
+      <div class="ex"><div class="n">2</div><p><code>.image { flex: 0 0 6rem; }</code> och <code>.text { flex: 1; }</code>. Bilden är låst. Texten tar resten.</p></div>
+      <div class="ex"><div class="n">3</div><p><code>.price { align-self: flex-start; }</code>. Priset sitter uppe i hörnet. Texten är kvar i mitten.</p></div>
     </div>
     <div class="note safe"><div class="tag">Kontroll</div><p>Bilden ändrar inte bredd när du drar i fönstret. Texten gör det. Priset ligger högre än texten.</p></div>
   </div></section>
