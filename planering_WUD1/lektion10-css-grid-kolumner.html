@@ -33,6 +33,7 @@
   .exercise pre { margin-top: .7rem; }
   .exercise .exercises .ex { padding: .45rem 0; }
   .exercise .note { margin-top: .7rem; }
+  .exercise img { max-width: 100%; display: block; }
 </style>
 </head>
 <body><div class="bar"></div><main class="deck">
@@ -130,19 +131,50 @@ grid-template-columns: repeat(3, 1fr);   <span class="c">/* samma som 1fr 1fr 1f
   </div></section>
 
   <section class="slide exercise"><div class="slide-inner">
-    <div class="kicker">Övning · sex kort</div>
-    <h2>Ett nytt galler</h2>
+    <div class="kicker">Övning A · galleriet</div>
+    <h2>Grid eller flex, samma sex bilder</h2>
+    <p class="lead">Öppna <code>playground/css-grid.html</code>. Sex <code>figure</code> med en placeholder-bild och en bildtext. Behållaren <code>.gallery</code> styr allt.</p>
     <pre>&lt;div class="gallery"&gt;
-  &lt;div class="card"&gt;1&lt;/div&gt;
-  &lt;!-- …kort 2 till 6, samma element --&gt;
+  &lt;figure class="card"&gt;
+    &lt;img src="https://placehold.co/600x400/…?text=1" alt="Bild 1"&gt;
+    &lt;figcaption&gt;Bild 1&lt;/figcaption&gt;
+  &lt;/figure&gt;
+  &lt;!-- …bild 2 till 6, samma element --&gt;
 &lt;/div&gt;</pre>
     <div class="exercises">
-      <div class="ex"><div class="n">1</div><p>Klistra in HTML:en. <code>.gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }</code> och en kant på <code>.card</code>.</p></div>
-      <div class="ex"><div class="n">2</div><p>Ändra kolumnerna till <code>2fr 1fr 1fr</code>. Första kolumnen blir dubbelt så bred.</p></div>
-      <div class="ex"><div class="n">3</div><p>Lägg till <code>grid-template-rows: 8rem 8rem;</code>. De två första raderna får fast höjd. Ett sjunde kort skulle hamna på en ny, implicit rad.</p></div>
-      <div class="ex"><div class="n">4</div><p>Första kortet: <code>grid-column: 3; grid-row: 1;</code>. Det hoppar till övre högra cellen. De andra fyller på i ordning.</p></div>
+      <div class="ex"><div class="n">1</div><p>Kör först <code>.gallery { display: flex; flex-wrap: wrap; gap: 1rem; }</code>. Bilderna ligger på rad och bryter när de inte får plats.</p></div>
+      <div class="ex"><div class="n">2</div><p>Byt till <code>.gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }</code>. Jämna kolumner och två rader – utan att du ritat raderna.</p></div>
+      <div class="ex"><div class="n">3</div><p>Jämför: vad blev jämnare med grid, och vad kunde flex som grid inte gör här?</p></div>
     </div>
-    <div class="note safe"><div class="tag">Spara filen</div><p>Imorgon får ett kort ta flera celler, och samma galler läggs in i en sida.</p></div>
+  </div></section>
+
+  <section class="slide exercise"><div class="slide-inner">
+    <div class="kicker">Övning B · kolumnbredden</div>
+    <h2>Dela bredden med fr</h2>
+    <p class="lead">Fortsätt i <code>css-grid.html</code>. <code>.gallery</code> är ett grid med tre kolumner. Nu bestämmer du hur breda de är.</p>
+    <pre>grid-template-columns: 2fr 1fr 1fr;
+grid-template-columns: repeat(3, 1fr);   <span class="c">/* lika breda */</span></pre>
+    <div class="exercises">
+      <div class="ex"><div class="n">1</div><p>Sätt <code>grid-template-columns: 2fr 1fr 1fr</code>. Vilken bild blir bredast? Räknar du <em>andelar</em> eller pixlar?</p></div>
+      <div class="ex"><div class="n">2</div><p>Tillbaka till <code>repeat(3, 1fr)</code>. Alla tre kolumner lika breda.</p></div>
+      <div class="ex"><div class="n">3</div><p>Lägg till <code>grid-template-rows: 10rem 10rem;</code>. De två första raderna låser höjden, även om bildtexterna skiljer sig.</p></div>
+      <div class="ex"><div class="n">4</div><p>Byt till <code>grid-template-rows: 10rem 10rem 10rem;</code>. Vad händer med bild 6 när raden redan är ritad?</p></div>
+    </div>
+  </div></section>
+
+  <section class="slide exercise"><div class="slide-inner">
+    <div class="kicker">Övning C · flytta en bild</div>
+    <h2>Peka ut en cell</h2>
+    <p class="lead">Samma galleri. Nu stannar bild 1 kvar först i HTML, men ska hamna i övre högra hörnet.</p>
+    <pre>.card:first-child {
+  grid-column: 3;    <span class="c">/* börja på linje 3 → kolumn 3 */</span>
+  grid-row: 1;       <span class="c">/* börja på linje 1 → rad 1 */</span>
+}</pre>
+    <div class="exercises">
+      <div class="ex"><div class="n">1</div><p>Lägg regeln på plats. Bild 1 hoppar till övre högra cellen.</p></div>
+      <div class="ex"><div class="n">2</div><p>Rita på papper var bild 1–6 hamnar. 2, 3 och 4 fyller lediga celler i ordning – därför läser första raden <strong>2 · 3 · 1</strong>.</p></div>
+      <div class="ex"><div class="n">3</div><p>Prova <code>grid-column: 2; grid-row: 2;</code> på bild 1. Hur flyttar sig resten?</p></div>
+    </div>
   </div></section>
 
   <section class="slide"><div class="slide-inner">
